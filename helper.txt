@@ -1,0 +1,5 @@
+Paso para clonar el sistema
+primer paso crear el entorno virtual python -m venv venv
+segundo paso activar el entorno virtual venv\Scripts\activate
+Tercero paso   pip install -r requirements.txt
+
