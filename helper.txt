@@ -3,3 +3,5 @@ primer paso crear el entorno virtual python -m venv venv
 segundo paso activar el entorno virtual venv\Scripts\activate
 Tercero paso   pip install -r requirements.txt
 
+
+El localhost es http://127.0.0.1:5000/ Solo copien y pegue y lo van a ver . Acuerdense que esto es python es diferente a la forma de trabajo que la del Laravel
