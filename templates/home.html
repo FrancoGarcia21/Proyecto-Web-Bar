@@ -4,39 +4,73 @@
     <meta charset="UTF-8">
     <title>Gestor de Bar</title>
     <style>
+        * {
+            box-sizing: border-box;
+        }
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f3f3f3;
             margin: 0;
-            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: white;
         }
         header {
-            background-color: #333;
-            color: white;
+            background-color: #00d09c;
             padding: 1rem;
             text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
         }
-        main {
-            padding: 2rem;
+        .container {
+            display: flex;
+            height: calc(100vh - 70px); /* 100% alto menos el header */
         }
-        .card {
-            background: white;
+        .sidebar {
+            background-color: #00d09c;
+            width: 200px;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        .sidebar button {
             padding: 1rem;
-            border-radius: 8px;
-            box-shadow: 0 0 10px #ccc;
-            margin-bottom: 1rem;
+            border: none;
+            border-radius: 25px;
+            background-color: #333;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .sidebar button:hover {
+            background-color: #555;
+        }
+        .main-content {
+            flex: 1;
+            background-color: #3a3a3a;
+            margin: 1rem;
+            padding: 2rem;
+            border: 1px solid #999;
+            text-align: center;
+        }
+        .main-content h2 {
+            color: #00d09c;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Gestor de Bar</h1>
-    </header>
-    <main>
-        <div class="card">
-            <h2>Bienvenido</h2>
-            <p>Desde aquí vas a poder gestionar el stock, los usuarios y las ventas.</p>
+    <header>GESTOR DE BAR</header>
+    <div class="container">
+        <div class="sidebar">
+            <button>STOCK</button>
+            <button>VENTA</button>
+            <button>INFORME</button>
+            <button>USUARIO</button>
         </div>
-    </main>
+        <div class="main-content">
+            <h2>BIENVENIDO</h2>
+            <p>Desde aquí vas a poder gestionar stock, ventas, informes y usuarios.</p>
+        </div>
+    </div>
 </body>
 </html>
