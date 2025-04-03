@@ -11,3 +11,12 @@ Tercero paso   pip install -r requirements.txt
 
 
 El localhost es http://127.0.0.1:5000/ Solo copien y pegue y lo van a ver . Acuerdense que esto es python es diferente a la forma de trabajo que la del Laravel
+
+Para iniciar a correr el proyecto:
+1ro - venv\Scripts\activate
+2do - python app.python
+3ro - ir a  http://127.0.0.1:5000/
+
+Para salir del entorno virtual: 
+- Ctrl + C -> cierra / apaga el servidor
+- escribir la siguiente palabra hace que salgamos en entorno virtual y nos devuelve a la consola( ya no vemos el venv de color verde) -> deactivate
