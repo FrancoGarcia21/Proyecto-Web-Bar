@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Gestor de Bar</title>
+    <title>Gestor de Bar -  {%  block title %} {%endblock%}</title>
     <style>
         * {
             box-sizing: border-box;
@@ -62,14 +62,18 @@
     <header>GESTOR DE BAR</header>
     <div class="container">
         <div class="sidebar">
-            <button>STOCK</button>
-            <button>VENTA</button>
-            <button>INFORME</button>
-            <button>USUARIO</button>
+            <a href="{{url_for('stock')}}">STOCK</a>
+            <a href="{{url_for('venta')}}">VENTA</a>
+            <a href="{{url_for('informe')}}">INFORME</a>
+            <a href="{{url_for('usuarios')}}">USUARIO</a>
         </div>
         <div class="main-content">
             <h2>BIENVENIDO</h2>
             <p>Desde aquí vas a poder gestionar stock, ventas, informes y usuarios.</p>
+            {% block content %} 
+                <!-- Bloque de contenido -->
+
+            {%endblock%}
         </div>
     </div>
 </body>
