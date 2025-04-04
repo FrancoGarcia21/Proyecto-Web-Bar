@@ -5,11 +5,6 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    print(url_for('stock'))
-    print(url_for('venta'))
-    print(url_for('informe'))
-    print(url_for('usuarios')
-          )
     return render_template('home.html')  # Esto busca el archivo en /templates
 
 
