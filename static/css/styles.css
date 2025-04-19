@@ -51,3 +51,47 @@ header {
 .main-content h2 {
     color: #00d09c;
 }
+
+.flex-container {
+    background-color: #00d09c;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.header-left {
+    background-color: #00d09c;
+    flex: 0 0 auto;
+    margin-left: 0;
+    padding: 0 16px;
+}
+
+/* Este div ahora sí participa del flex layout */
+.button-center {
+    flex: 1; /* Ocupa el espacio restante */
+    display: flex;
+    justify-content: center; /* Centra horizontalmente los botones */
+    flex-wrap: nowrap; /* Evita que se vayan a otra línea */
+    gap: 12px; /* Espacio entre botones */
+    overflow-x: auto; /* Evita el desborde en pantallas chicas */
+    padding: 8px 16px;
+}
+
+.boton-ventana {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #2563eb;
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.boton-ventana:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-2px);
+}

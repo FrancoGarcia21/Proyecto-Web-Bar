@@ -1,9 +1,15 @@
 {%extends 'base.html' %}
 {% block title %} VENTA {%endblock%}
 
+<!-- Botones de la página -->
+{% block buttons %}
+<a href class="boton-ventana">AGREGAR</a>
+<a href class="boton-ventana">ELIMINAR</a>
+<a href class="boton-ventana">FINALIZAR</a>
+{%endblock%}
 
-
-
+<!-- Contenido de la página -->
 {% block content %}
-<h1> pagina de venta </h1>
+<h1 class="text-3xl md:text-4xl font-bold text-gray-800 tracking-tigh"> pagina
+  de venta </h1>
 {% endblock %}

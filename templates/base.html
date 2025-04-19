@@ -1,29 +1,41 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Gestor de Bar -  {%  block title %} {%endblock%}</title>
-    <link rel="stylesheet" href="{{url_for('static', filename = 'css/styles.css')}}">
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"> -->
-</head>
-<body>
-    <header>GESTOR DE BAR</header>
-    <div class="container">
-        <div class="sidebar">
-            <a href="{{url_for('stock')}}">STOCK</a>
-            <a href="{{url_for('venta')}}">VENTA</a>
-            <a href="{{url_for('informe')}}">INFORME</a>
-            <a href="{{url_for('usuarios')}}">USUARIO</a>
+    <head>
+        <meta charset="UTF-8">
+        <title>Gestor de Bar - {% block title %} {%endblock%}</title>
+        <link rel="stylesheet"
+            href="{{url_for('static', filename = 'css/main.css')}}">
+        <link rel="stylesheet"
+            href="{{url_for('static', filename = 'css/styles.css')}}">
+    </head>
+    <body>
+        <div class="flex-container">
+            <header class="header-left">GESTOR DE BAR</header>
+            <div class="button-center">
+                {% block buttons %}{% endblock %}
+            </div>
         </div>
-        <div class="main-content">
-            <h2>BIENVENIDO</h2>
-            <p>Desde aquí vas a poder gestionar stock, ventas, informes y usuarios.</p>
-            {% block content %} 
+        <div class="container">
+            <div class="sidebar">
+                <a href="{{url_for('stock')}}"
+                    class="boton-ventana">STOCK</a>
+                <a href="{{url_for('venta')}}"
+                    class="boton-ventana">VENTA</a>
+                <a href="{{url_for('informe')}}"
+                    class="boton-ventana">INFORME</a>
+                <a href="{{url_for('usuarios')}}"
+                    class="boton-ventana">USUARIO</a>
+            </div>
+            <div class="main-content">
+                <h2>BIENVENIDO</h2>
+                <p>Desde aquí vas a poder gestionar stock, ventas, informes y
+                    usuarios.</p>
+                {% block content %}
                 <!-- Bloque de contenido -->
 
-            {%endblock%}
+                {%endblock%}
+            </div>
         </div>
-    </div>
-    <script src="{{url_for('static', filename = 'js/script.js')}}"></script>
-</body>
+        <script src="{{url_for('static', filename = 'js/script.js')}}"></script>
+    </body>
 </html>

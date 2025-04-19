@@ -1,6 +1,15 @@
 {%extends 'base.html' %}
 {% block title %} USUARIOS {%endblock%}
 
+<!-- Botones de la página -->
+{% block buttons %}
+<a href class="boton-ventana">ACTUALIZAR</a>
+<a href class="boton-ventana">AGREGAR USUARIO</a>
+<a href class="boton-ventana">MODIFICAR ESTADO </a>
+<a href class="boton-ventana">BUSCAR USUARIO</a>
+{%endblock%}
+
+<!-- Contenido de la página -->
 {% block content %}
-<h1> pagina de usuarios </h1>
+<h1 class="text-3xl md:text-4xl font-bold text-gray-800 tracking-tigh"> pagina de usuarios </h1>
 {% endblock %}
