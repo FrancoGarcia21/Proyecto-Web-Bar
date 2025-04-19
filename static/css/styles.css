@@ -80,7 +80,6 @@ header {
 .boton-ventana {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #2563eb;
     color: white;
     font-weight: 600;
     text-decoration: none;
@@ -89,6 +88,14 @@ header {
     cursor: pointer;
     white-space: nowrap;
     transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.azul{
+    background-color: #2563eb; 
+}
+
+.boton-ventana {
+    @apply inline-block px-4 py-2 font-semibold rounded transition whitespace-nowrap;
 }
 
 .boton-ventana:hover {
