@@ -1,0 +1,58 @@
+
+<!-- BOTÓN AGREGAR PRODUCTO -->
+<!-- Botón para abrir el modal -->
+<button class="boton-ventana bg-blue-600 text-white hover:bg-blue-700"
+  onclick="my_modal_2.showModal()">AGREGAR PRODUCTO</button>
+
+<!-- Modal -->
+<dialog id="my_modal_2" class="modal">
+  <div class="modal-box w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
+    <h3 class="text-xl font-semibold mb-4"></h3>
+    <!-- Este botón cierra en la esquina -->
+    <form method="dialog">
+      <button
+        class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    </form>
+    <!-- Formulario del modal -->
+    <form method="post" action>
+
+      <div>
+        <label for="idProducto"
+          class="block text-sm font-medium text-gray-700">ID
+          del Producto:</label>
+        <input type="text" name="producto" id="idProducto"
+          class="mt-1 block w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+
+      <div>
+        <label for="idCantidad"
+          class="block text-sm font-medium text-gray-700">Cantidad:</label>
+        <input type="number" name="cantidad" id="idCantidad"
+          class="mt-1 block w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+
+      <div>
+        <label for="idCosto"
+          class="block text-sm font-medium text-gray-700">Costo:</label>
+        <input type="number" name="costo" id="idCosto"
+          class="mt-1 block w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+
+      <div>
+        <label for="idLimite"
+          class="block text-sm font-medium text-gray-700">Limite Alarmante:</label>
+        <input type="number" name="limite" id="idLimite"
+          class="mt-1 block w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+
+
+      <!-- Botones del formulario -->
+      <div class="flex justify-end space-x-2 pt-4">
+        <button type="submit"
+          class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Agregar Producto</button>
+        <button type="button" onclick="my_modal_2.close()"
+          class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">Cerrar</button>
+      </div>
+    </form>
+  </div>
+</dialog>

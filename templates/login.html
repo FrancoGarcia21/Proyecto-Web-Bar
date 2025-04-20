@@ -7,21 +7,12 @@
   </head>
   <body>
 
-    <h1>Registrar usuario</h1>
+    <h1> Login </h1>
     {%if error %}
     <p style="color:red">{{error}}</p>
     {% endif %}
 
-    <!-- FORMULARIO CON LIBRERIA -->
-    <form action method="post">
-      {{form.hidden_tag()}} <!-- hidden_tag nos ayuda en la validacion -->
-      {{form.username.label}}
-      {{form.username}}
-      <br>
-      {{form.password.label}}
-      {{form.password}}
-      <br>
-      {{form.submit}}
-    </form>
+    <!-- FORMULARIO CON LIBRERIA --> FALTA INSTALAR LIBRERIA
+
   </body>
 </html>

@@ -3,13 +3,16 @@
 
 <!-- Botones de la página -->
 {% block buttons %}
-<a href class="boton-ventana azul">ACTUALIZAR</a>
-<a href class="boton-ventana azul">AGREGAR USUARIO</a>
-<a href class="boton-ventana azul">MODIFICAR ESTADO </a>
-<a href class="boton-ventana azul">BUSCAR USUARIO</a>
+
+<!-- El actualizar  lo rompe implementar con ajax -->
+{%include 'botonUsuario/usuario-modificar.html'%}
+{%include 'botonUsuario/usuario-agregar.html'%}
+{%include 'botonUsuario/usuario-buscar.html'%}
+
 {%endblock%}
 
 <!-- Contenido de la página -->
 {% block content %}
-<h1 class="text-3xl md:text-4xl font-bold text-gray-800 tracking-tigh"> pagina de usuarios </h1>
+<h1 class="text-3xl md:text-4xl font-bold text-gray-800 tracking-tigh"> pagina
+  de usuarios </h1>
 {% endblock %}

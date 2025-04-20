@@ -3,10 +3,12 @@
 
 <!-- Botones de la página -->
 {% block buttons %}
-<a href="" class="boton-ventana azul">AGREGAR STOCK</a>
-<a href="" class="boton-ventana azul">AGREGAR PRODUCTO</a>
-<a href="" class="boton-ventana azul">MODIFICAR ESTADO</a>
-<a href="" class="boton-ventana azul">BUSCAR PRODUCTO</a>
+
+{%include 'botonStock/stock-agregarStock.html'%}
+{%include 'botonStock/stock-agregarProducto.html'%}
+{%include 'botonStock/stock-modificarEstado.html'%}
+{%include 'botonStock/stock-buscar.html'%}
+
 {%endblock%}
 
 <!-- Contenido de la página -->
