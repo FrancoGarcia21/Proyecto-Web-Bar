@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return render_template('home.html')  # Esto busca el archivo en /templates
+    return render_template('base.html')  # Esto busca el archivo en /templates
 
 
 if __name__ == '__main__':

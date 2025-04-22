@@ -6,10 +6,10 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
     background-color: black;
-    color: white;
+    color: rgb(30, 1, 1);
 }
 header {
-    background-color: #00d09c;
+    background-color: #dce2e0;
     padding: 1rem;
     text-align: center;
     font-size: 1.5rem;
@@ -20,7 +20,7 @@ header {
     height: calc(100vh - 70px); /* 100% alto menos el header */
 }
 .sidebar {
-    background-color: #00d09c;
+    background-color: #dce2e0;
     width: 200px;
     padding: 2rem 1rem;
     display: flex;
@@ -49,18 +49,18 @@ header {
     text-align: center;
 }
 .main-content h2 {
-    color: #00d09c;
+    color: #dce2e0;
 }
 
 .flex-container {
-    background-color: #00d09c;
+    background-color: #dce2e0;
     display: flex;
     align-items: center;
     width: 100%;
 }
 
 .header-left {
-    background-color: #00d09c;
+    background-color: #dce2e0;
     flex: 0 0 auto;
     margin-left: 0;
     padding: 0 16px;
@@ -80,7 +80,7 @@ header {
 .boton-ventana {
     display: inline-block;
     padding: 10px 20px;
-    color: white;
+    color: rgb(19, 5, 5);
     font-weight: 600;
     text-decoration: none;
     border-radius: 6px;
@@ -99,6 +99,6 @@ header {
 }
 
 .boton-ventana:hover {
-    background-color: #1d4ed8;
+    background-color: #8393c0;
     transform: translateY(-2px);
 }
