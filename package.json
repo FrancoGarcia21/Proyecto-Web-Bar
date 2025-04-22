@@ -9,8 +9,8 @@
   },
   "scripts": {
     "dev": "concurrently \"npm:tailwind\" \"npm:flask\"",
-    "tailwind": "npx tailwindcss -i ./static/src/tailwind.css -o ./static/css/main.css --watch",
-    "flask": "flask --app app --debug run"
+    "flask": "flask --app app --debug run",
+    "tailwind": "npx tailwindcss -i ./static/src/tailwind.css -o ./static/css/main.css --watch"
   },
   "keywords": [],
   "author": "",
