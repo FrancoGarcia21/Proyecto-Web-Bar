@@ -42,14 +42,14 @@ header {
 }
 .main-content {
     flex: 1;
-    background-color: #3a3a3a;
+    background-color: #ead5d5;
     margin: 1rem;
     padding: 2rem;
     border: 1px solid #999;
     text-align: center;
 }
 .main-content h2 {
-    color: #dce2e0;
+    color: #000000;
 }
 
 .flex-container {
