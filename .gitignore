@@ -187,3 +187,6 @@ yarn.lock
 # Environment variables
 .env
 .env.*
+
+#ignorar el main.css
+static/css/main.css
