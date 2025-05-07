@@ -7,11 +7,12 @@
 {%include 'botonStock/stock-agregarStock.html'%}
 {%include 'botonStock/stock-agregarProducto.html'%}
 {%include 'botonStock/stock-modificarEstado.html'%}
-{%include 'botonStock/stock-buscar.html'%}
 
 {%endblock%}
 
 <!-- Contenido de la página -->
 {% block content %}
-<h1> pagina de stock </h1>
+{% if mostrar == 'lista' %}
+{% include 'stockLista.html' %}
+{% endif %}
 {% endblock %}

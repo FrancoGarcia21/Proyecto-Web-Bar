@@ -172,3 +172,18 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Node.js related files
+package.json
+package-lock.json
+npm-shrinkwrap.json
+pnpm-lock.yaml
+yarn.lock
+
+# NPM configuration files
+.npmrc
+.npmignore
+
+# Environment variables
+.env
+.env.*
