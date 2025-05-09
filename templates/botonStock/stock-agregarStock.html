@@ -9,13 +9,10 @@
   <div class="modal-box w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
     <h3 class="text-xl font-semibold mb-4"></h3>
     <!-- Este botón cierra en la esquina -->
-    <form method="dialog">
-      <button
-        class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-    </form>
-    <!-- Formulario del modal -->
-    <form method="post" action>
 
+    <!-- Formulario del modal -->
+    <form method="post" action="{{url_for('stock.modificar_stock_route')}}">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
       <div>
         <label for="idProducto"
           class="block text-sm font-medium text-gray-700">ID
@@ -35,7 +32,7 @@
       <!-- Botones del formulario -->
       <div class="flex justify-end space-x-2 pt-4">
         <button type="submit"
-          class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Agregar</button>
+          class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Modificar</button>
         <button type="button" onclick="my_modal_1.close()"
           class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">Cerrar</button>
       </div>

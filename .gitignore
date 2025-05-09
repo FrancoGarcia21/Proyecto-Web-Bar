@@ -190,3 +190,5 @@ yarn.lock
 
 #ignorar el main.css
 static/css/main.css
+static/css/main.css
+/static/css

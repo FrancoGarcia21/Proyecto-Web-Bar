@@ -8,19 +8,28 @@
 <dialog id="my_modal_2" class="modal">
   <div class="modal-box w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
     <h3 class="text-xl font-semibold mb-4"></h3>
-    <!-- Este botón cierra en la esquina -->
-    <form method="dialog">
+
+    <!-- Formulario del modal -->
+    <form action='{{url_for("stock.cargar_producto_nuevo_route")}}'
+      method="POST">
+
+      <!-- Este botón cierra en la esquina -->
       <button
         class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-    </form>
-    <!-- Formulario del modal -->
-    <form method="post" action>
 
       <div>
         <label for="idProducto"
           class="block text-sm font-medium text-gray-700">ID
           del Producto:</label>
         <input type="text" name="producto" id="idProducto"
+          class="mt-1 block w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+
+      <div>
+        <label for="idnombreProducto"
+          class="block text-sm font-medium text-gray-700">Nombre
+          del Producto:</label>
+        <input type="text" name="nombreProducto" id="idNombreProducto"
           class="mt-1 block w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
       </div>
 
@@ -33,23 +42,35 @@
 
       <div>
         <label for="idCosto"
-          class="block text-sm font-medium text-gray-700">Costo:</label>
+          class="block text-sm font-medium text-gray-700">Costo unitario:</label>
         <input type="number" name="costo" id="idCosto"
           class="mt-1 block w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
       </div>
 
       <div>
         <label for="idLimite"
-          class="block text-sm font-medium text-gray-700">Limite Alarmante:</label>
+          class="block text-sm font-medium text-gray-700">Limite
+          Alarmante:</label>
         <input type="number" name="limite" id="idLimite"
           class="mt-1 block w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
       </div>
 
+      <div>
+        <label for="Categoria"
+          class="block text-sm font-medium text-gray-700">Categoria:</label>
+        <select name="categoria" id="idCategoria"
+          class="mt-1 block w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="1">Bebida alcoholica</option>
+          <option value="2">Insumo</option>
+          <option value="3">Bebida</option>
+        </select>
+      </div>
 
       <!-- Botones del formulario -->
       <div class="flex justify-end space-x-2 pt-4">
         <button type="submit"
-          class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Agregar Producto</button>
+          class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Agregar
+          Producto</button>
         <button type="button" onclick="my_modal_2.close()"
           class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">Cerrar</button>
       </div>
