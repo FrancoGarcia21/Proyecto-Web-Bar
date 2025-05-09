@@ -7,8 +7,53 @@ def obtener_usuarios():
         return []  # Devuelve lista vacía si falla la conexión
 
     cursor = conexion.cursor()
-    cursor.execute('SELECT * FROM public."Usuario"')
+    cursor.execute('SELECT * FROM public."usuarios"')
     usuarios = cursor.fetchall()
     cursor.close()
     conexion.close()
     return usuarios
+
+
+def cargar_usuario(dni, nombre, fecha_nacimiento, puesto, estado, clave):
+    """ Función para gargar un usuario en la base """
+    conexion = get_connection()
+    if conexion is None:
+        return False
+
+    try:
+        cursor = conexion.cursor()
+        cursor.execute("""
+            INSERT INTO public."usuarios" (dni_usuario, nombre, fecha_nacimiento, tipo_usuario, estado, clave)
+            VALUES (%s, %s, %s, %s, %s, %s)
+        """, (dni, nombre, fecha_nacimiento, puesto, estado, clave))
+        conexion.commit()
+        cursor.close()
+        conexion.close()
+        return True
+    except Exception as e:
+        print("Error al cargar usuario:", e)
+        return False
+    
+def modificar_usuario(dni, estado):
+    """ Función que modifica el estado en la base """
+    conexion = get_connection()
+    
+    if conexion is None:
+        return False
+    
+    try:
+        cursor = conexion.cursor()
+        cursor.execute("""
+            UPDATE public.usuarios
+            SET estado = %s
+            WHERE dni_usuario = %s
+        """, (estado, dni))
+        conexion.commit()
+        cursor.close()
+        conexion.close()
+        return True
+    except Exception as e:
+        print( "Error al modificar Usuario: ", e)
+        return False
+    
+    
