@@ -1,5 +1,6 @@
 from database.connection import get_connection
 
+############## Función OBTENER Usuarios
 def obtener_usuarios():
     """ Función para obtener usuarios """
     conexion = get_connection()
@@ -13,7 +14,7 @@ def obtener_usuarios():
     conexion.close()
     return usuarios
 
-
+############## Función CARGAR usuario
 def cargar_usuario(dni, nombre, fecha_nacimiento, puesto, estado, clave):
     """ Función para gargar un usuario en la base """
     conexion = get_connection()
@@ -33,7 +34,8 @@ def cargar_usuario(dni, nombre, fecha_nacimiento, puesto, estado, clave):
     except Exception as e:
         print("Error al cargar usuario:", e)
         return False
-    
+
+############## Función MODIFICAR usuarios
 def modificar_usuario(dni, estado):
     """ Función que modifica el estado en la base """
     conexion = get_connection()
