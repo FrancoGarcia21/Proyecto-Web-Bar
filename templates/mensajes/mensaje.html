@@ -1,0 +1,10 @@
+{% set mensajes_js = [] %}
+{% for cat, msg in get_flashed_messages(with_categories=True) %}
+{% set _ = mensajes_js.append({'category': cat, 'message': msg}) %}
+{% endfor %}
+
+{% if mensajes_js %}
+<script id="flash-data" type="application/json">
+    {{ mensajes_js | tojson | safe }}
+  </script>
+{% endif %}

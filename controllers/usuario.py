@@ -35,8 +35,8 @@ def cargar_usuario(dni, nombre, fecha_nacimiento, puesto, estado, clave):
         print("Error al cargar usuario:", e)
         return False
 
-############## Función MODIFICAR usuarios
-def modificar_usuario(dni, estado):
+############## Función MODIFICAR ESTADO usuarios
+def modificar_estado_usuario(dni, estado):
     """ Función que modifica el estado en la base """
     conexion = get_connection()
     

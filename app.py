@@ -51,6 +51,9 @@ from routes.login import login_bp
 
 app = Flask(__name__)
 
+# Esta palabra se utiliza para FLASH, maneja las sesiones
+app.secret_key = 'proyectoBar2025'
+
 # Registrar Blueprints
 app.register_blueprint(stock_bp)
 app.register_blueprint(venta_bp)
@@ -61,7 +64,7 @@ app.register_blueprint(login_bp)
 @app.route('/')
 def home():
     """ Función principal muestra la página de inicio """
-    mensaje = "BIENVENIDO Desde aquí vas a poder gestionar stock, ventas, informes y usuarios."
+    mensaje = '<div class="bg-blue-100 border border-blue-300 text-blue-800 px-6 py-4 rounded-md shadow-md mt-6 text-center text-lg font-semibold"><h1> BIENVENIDO Desde aquí vas a poder gestionar stock, ventas, informes y usuarios.</h1></div>'
     return render_template('base.html', mensaje=mensaje)
 
 if __name__ == '__main__':
