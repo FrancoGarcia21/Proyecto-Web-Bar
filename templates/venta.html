@@ -10,8 +10,8 @@
 
 <!-- Contenido de la página -->
 {% block content %}
-<h1 class="text-3xl md:text-4xl font-bold text-gray-800 tracking-tigh"> pagina
-  de venta </h1>
-  <h1 class="text-4xl text-red-500 font-bold">Hola Tailwind</h1>
-
+<!-- Se incluye el contenido de venta, es un listado de los productos con su precio (ver si lo dejamos como botones o listado) -->
+{% include 'VentaLista.html' %}
 {% endblock %}
+
+<!-- LO ideal seria una tabla con los productos con el buscar, y en la tabla un agregar, eliminar, y en alguna parte ir mostrando los items agregados -->
