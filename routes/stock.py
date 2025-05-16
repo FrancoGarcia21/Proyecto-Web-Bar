@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, request, redirect, url_for
-from controllers.stock import obtener_productos, cargar_producto_nuevo,modificar_stock, obtener_un_producto
+from flask import Blueprint, render_template, request, redirect, url_for, flash
+from controllers.stock import obtener_productos, cargar_producto_nuevo,modificar_stock, modificar_estado
 
 import logging
 
@@ -25,7 +25,9 @@ def cargar_producto_nuevo_route():
     limite_alarmante = int(request.form.get('limite'))
     id_categoria = request.form.get('categoria')
     
-    cargar_producto_nuevo(id_producto, nombre_producto, cantidad_stock, costo_unitario, limite_alarmante, id_categoria)
+    resultado = cargar_producto_nuevo(id_producto, nombre_producto, cantidad_stock, costo_unitario, limite_alarmante, id_categoria)
+
+    mensajes(resultado, "✅ PRODUCTO AGREGADO CORRECTAMENTE.")
 
     return redirect(url_for('stock.stock'))
 
@@ -36,6 +38,35 @@ def modificar_stock_route():
     id_producto = request.form.get('producto')
     cantidad_stock = request.form.get('cantidad')
     
-    modificar_stock(id_producto, cantidad_stock)
+    resultado = modificar_stock(id_producto, cantidad_stock)
+    
+    mensajes(resultado, "✅ STOCK MODIFICADO CORRECTAMENTE.")
     
     return redirect(url_for('stock.stock'))
+
+############################### FUNCIÓN DE MENSAJES
+@stock_bp.route('/stock/modificar_estado', methods=['POST'])
+def modificar_estado_route():
+    """ Ruta para modificar estado """
+    id_producto = request.form.get('producto')
+    estado = request.form.get('estado')
+    
+    resultado = modificar_estado(id_producto, estado)
+    
+    mensajes(resultado, "✅ ESTADO MODIFICADO CORRECTAMENTE.")
+
+    return redirect(url_for('stock.stock'))
+
+
+############################### FUNCIÓN DE MENSAJES
+def mensajes(resultado, mensaje_personalizado):
+    """ MODULO DE MENSAJES GENERICO """
+    if resultado == "Producto_No_Encontrado":
+        flash("❌ Producto no encontrado. Verificá el código.", "error")
+    elif resultado == "ok":
+        flash(mensaje_personalizado, "success")
+    elif resultado == "Conexion_Error":
+        flash("❌ Error de conexión con la base de datos.", "error")
+    else:
+        flash("❌ Ocurrió un error inesperado.", "error")
+    

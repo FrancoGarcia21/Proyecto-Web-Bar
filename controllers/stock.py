@@ -43,7 +43,7 @@ def cargar_producto_nuevo(id_producto, nombre_producto, cantidad_stock, costo_un
     """ Función para cargar productos nuevos """
     conexion = get_connection()
     if conexion is None:
-        return []  
+        return "Conexion_Error"  
     
     try:
         cursor = conexion.cursor()
@@ -54,24 +54,23 @@ def cargar_producto_nuevo(id_producto, nombre_producto, cantidad_stock, costo_un
         conexion.commit()
         cursor.close()
         conexion.close()
-        return True
+        return "ok"
     except Exception as e:
             print("########## ERROR AL CARGAR EL PRODUCTO al cargar producto: ###############3", e)
-            return False
+            return 'error'
         
 ############## Función MODIFICAR STOCK de un producto
 def modificar_stock(id_producto, cantidad_stock):
     """ Función para modificar stock de un producto """
     conexion = get_connection()
     if conexion is None:
-        return []
+        return "Conexion_Error"
     
     try:
         # busco y sumo el producto nuevo
         un_producto = obtener_un_producto(id_producto)
         if not un_producto:
-            print("Producto no encontrado")
-            return False
+            return "Producto_No_Encontrado"
         
         cantidad_stock = int(cantidad_stock) + int(un_producto[3]) # el 3 es porque es la 3er columna de la tabla
 
@@ -84,7 +83,35 @@ def modificar_stock(id_producto, cantidad_stock):
         conexion.commit()
         cursor.close()
         conexion.close()
-        return True
+        return "ok"
     except Exception as e:
-        print("############# ERROR AL MODIFICAR EL STOCK: ", e)
-        return False
+        return "error"
+    
+############## Función MODIFICAR ESTADO de un producto
+def modificar_estado(id_producto, estado):
+    """ Función para modificar el estado en la base """
+    conexion = get_connection()
+    
+    if conexion == None:
+        return "conexion_error"
+    
+    try:
+        # busco y sumo el producto nuevo
+        un_producto = obtener_un_producto(id_producto)
+        if not un_producto:
+            return "Producto_No_Encontrado"
+        
+        cursor = conexion.cursor()
+        cursor.execute(
+            """ UPDATE public."productos" 
+                SET estado = %s
+                WHERE id_producto = %s
+            """, (estado, id_producto)
+        )
+        conexion.commit()
+        cursor.close()
+        conexion.close()
+        return "ok"
+    except Exception as e:
+        return "error"
+        

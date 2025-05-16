@@ -34,9 +34,9 @@
                 </a>
             </div>
             <div class="main-content">
+                <!-- Mensaje de bienvenida -->
                 <div>
-
-                    {{ mensaje }}
+                    {{ mensaje | safe}}
                 </div>
                 {% block content %}
                 <!-- Bloque de contenido -->
@@ -54,6 +54,13 @@
         <!-- Script para DataTable -->
         <script
             src="{{url_for('static', filename = 'js/DataTable.js')}}"></script>
+
+        <!-- Script para Sweet alert -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <!-- Script para los mensajes -->
+        <script
+            src="{{ url_for('static', filename='js/mensajes.js') }}"></script>
 
     </body>
 </html>

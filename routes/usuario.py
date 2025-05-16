@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from controllers.usuario import obtener_usuarios, cargar_usuario, modificar_usuario
+from controllers.usuario import obtener_usuarios, cargar_usuario, modificar_estado_usuario
 
 usuario_bp = Blueprint('usuario', __name__)
 
@@ -29,11 +29,11 @@ def cargar_usuario_route():
 
 ############## Ruta MODIFICAR ESTADO de un Usuario
 @usuario_bp.route('/usuario/modificar', methods=['POST'])
-def modificar_usuario_route():
+def modificar_estado_usuario_route():
     """ Función para modificar el estado de un usuario """
     dni = request.form.get('dni')
     estado = request.form.get('estado')
     
-    modificar_usuario(dni, estado)
+    modificar_estado_usuario(dni, estado)
     
     return redirect(url_for('usuario.usuario'))
