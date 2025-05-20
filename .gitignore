@@ -183,7 +183,7 @@ yarn.lock
 # NPM configuration files
 .npmrc
 .npmignore
-
+node_modules
 # Environment variables
 .env
 .env.*
