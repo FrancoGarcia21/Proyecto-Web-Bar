@@ -1,5 +1,26 @@
 from database.connection import get_connection
 
+############## Función TODAS las Categorias
+def obtener_categorias():
+    """ Obtiene las categorias de la base """
+    conexion = get_connection()
+    if conexion is None:
+        return "Conexion fallida"
+    
+    try:
+        cursor = conexion.cursor()
+        cursor.execute(""" 
+                       SELECT * FROM public.categorias
+                       """)
+        categorias = cursor.fetchall()
+        cursor.close()
+        conexion.close()
+        return categorias
+    except Exception as e:
+            print("Error al buscar productos:", e)
+            return False
+
+
 ############## Función OBTENER UN producto
 def obtener_un_producto(id_producto):
     """ Función para obtener un solo producto """

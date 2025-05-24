@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from controllers.stock import obtener_productos, cargar_producto_nuevo,modificar_stock, modificar_estado
+from controllers.stock import obtener_productos, cargar_producto_nuevo,modificar_stock, modificar_estado, obtener_categorias
 from utils.decoradores import login_required, role_required
 import logging
 
@@ -14,7 +14,8 @@ stock_bp = Blueprint('stock', __name__)
 def stock():
     """ Muestra el stock """
     productos = obtener_productos()
-    return render_template('stock.html', productos=productos, mostrar='lista')
+    categorias = obtener_categorias()
+    return render_template('stock.html', productos=productos, categorias=categorias, mostrar='lista')
 
 
 ############################### Ruta de CARGAR producto
