@@ -1,4 +1,7 @@
+import bcrypt
+
 from database.connection import get_connection
+
 
 ############## Función OBTENER Usuarios
 def obtener_usuarios():
@@ -22,11 +25,14 @@ def cargar_usuario(dni, nombre, fecha_nacimiento, puesto, estado, clave):
         return False
 
     try:
+        # Encripto la clave
+        hashed_password = bcrypt.hashpw(clave.encode('utf-8'), bcrypt.gensalt())
+        
         cursor = conexion.cursor()
         cursor.execute("""
             INSERT INTO public."usuarios" (dni_usuario, nombre, fecha_nacimiento, tipo_usuario, estado, clave)
             VALUES (%s, %s, %s, %s, %s, %s)
-        """, (dni, nombre, fecha_nacimiento, puesto, estado, clave))
+        """, (dni, nombre, fecha_nacimiento, puesto, estado, hashed_password.decode('utf-8')))
         conexion.commit()
         cursor.close()
         conexion.close()
