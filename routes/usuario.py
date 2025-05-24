@@ -1,10 +1,14 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from controllers.usuario import obtener_usuarios, cargar_usuario, modificar_estado_usuario
+from utils.decoradores import login_required, role_required
+
 
 usuario_bp = Blueprint('usuario', __name__)
 
 ############## Ruta OBTENER Usuarios
 @usuario_bp.route('/usuario')
+@login_required
+@role_required('administrador')
 def usuario():
     """ Función para obtener el listado de empleados """
     usuarios = obtener_usuarios()
@@ -12,6 +16,8 @@ def usuario():
 
 ############## Ruta CARGAR NUEVO Usuario
 @usuario_bp.route('/usuario/cargar', methods=['POST'])
+@login_required
+@role_required('administrador')
 def cargar_usuario_route():
     """ Función para cargar usuario , recibe datos desde el formulario """
     dni = request.form.get('dni')
@@ -29,6 +35,8 @@ def cargar_usuario_route():
 
 ############## Ruta MODIFICAR ESTADO de un Usuario
 @usuario_bp.route('/usuario/modificar', methods=['POST'])
+@login_required
+@role_required('administrador')
 def modificar_estado_usuario_route():
     """ Función para modificar el estado de un usuario """
     dni = request.form.get('dni')

@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from controllers.stock import obtener_productos, cargar_producto_nuevo,modificar_stock, modificar_estado
-
+from utils.decoradores import login_required, role_required
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
@@ -9,13 +9,18 @@ stock_bp = Blueprint('stock', __name__)
 
 ############################### Ruta  de MOSTRAR lista de productos
 @stock_bp.route('/stock')
+@login_required
+@role_required('administrador')
 def stock():
+    """ Muestra el stock """
     productos = obtener_productos()
     return render_template('stock.html', productos=productos, mostrar='lista')
 
 
 ############################### Ruta de CARGAR producto
 @stock_bp.route('/stock/cargar', methods=['POST'])
+@login_required
+@role_required('administrador')
 def cargar_producto_nuevo_route():
     """ Ruta para cargar un producto nuevo """
     id_producto = request.form.get('producto')
@@ -33,6 +38,8 @@ def cargar_producto_nuevo_route():
 
 ############################### Ruta AGREGAR STOCK
 @stock_bp.route('/stock/modificarStock', methods=['POST'])
+@login_required
+@role_required('administrador')
 def modificar_stock_route():
     """ Ruta para modificar el stock"""
     id_producto = request.form.get('producto')
@@ -46,6 +53,8 @@ def modificar_stock_route():
 
 ############################### FUNCIÓN DE MENSAJES
 @stock_bp.route('/stock/modificar_estado', methods=['POST'])
+@login_required
+@role_required('administrador')
 def modificar_estado_route():
     """ Ruta para modificar estado """
     id_producto = request.form.get('producto')
