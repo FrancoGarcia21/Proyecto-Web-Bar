@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from controllers.stock import obtener_productos
 from controllers.venta import cargar_venta
-from utils.decoradores import login_required
+from utils.decoradores import login_required, role_required
 
 
 venta_bp = Blueprint('venta', __name__)
@@ -9,6 +9,7 @@ venta_bp = Blueprint('venta', __name__)
 ############## Ruta de ventana original
 @venta_bp.route('/venta')
 @login_required
+@role_required('administrador', 'vendedor', 'cajero')
 def venta():
     """ Ruta que lleva a la ventana venta con los productos """
     productos = obtener_productos()
@@ -17,6 +18,7 @@ def venta():
 ############## Ruta agregar una venta
 @venta_bp.route('/venta/pedido')
 @login_required
+@role_required('administrador', 'vendedor', 'cajero')
 def cargar_venta_route():
     """ Ruta que carga un pedido a la base """
     pedido = cargar_venta()

@@ -15,7 +15,7 @@ def verificacion_usuario(id_usuario, password):
     try:
         cursor = conexion.cursor()
         cursor.execute("""
-                       SELECT clave FROM public.usuarios WHERE dni_usuario = %s
+                       SELECT clave, tipo_usuario FROM public.usuarios WHERE dni_usuario = %s
                        """, (id_usuario,))
         clave = cursor.fetchone()
         cursor.close()
@@ -24,11 +24,11 @@ def verificacion_usuario(id_usuario, password):
         if clave is None:
           return "false"
         
-        clave_hasheada = clave[0].encode('utf-8')
-        print(clave, clave_hasheada)
+        clave_hasheada, rol = clave[0].encode('utf-8'), clave[1]
+        
         
         if bcrypt.checkpw(password.encode('utf-8'), clave_hasheada):
-            return "ok"
+            return "ok", rol
         else:
             return "false"
         

@@ -20,14 +20,20 @@
         </div>
         <div class="container">
             <div class="sidebar">
+                {% if session.get('rol') == 'administrador' %}
                 <a href="{{url_for('stock.stock')}}"
                     class="boton-ventana estiloBtn">STOCK</a>
-                <a href="{{url_for('venta.venta')}}"
-                    class="boton-ventana estiloBtn">VENTA</a>
                 <a href="{{url_for('informe.informe')}}"
                     class="boton-ventana estiloBtn">INFORME</a>
                 <a href="{{url_for('usuario.usuario')}}"
                     class="boton-ventana estiloBtn">USUARIO</a>
+                {% endif %}
+
+                {% if session.get('rol') in ['administrador', 'vendedor', 'cajero'] %}
+                <a href="{{url_for('venta.venta')}}"
+                    class="boton-ventana estiloBtn">VENTA</a>
+                {% endif %}
+
                 <a href="{{url_for('login.logout')}}"
                     class="boton-ventana mt-auto bg-red-600 hover:bg-red-700 text-white">
                     Salir
