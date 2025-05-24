@@ -15,6 +15,7 @@ body {
 header {
     background-color: #0e0d0d;
     color: #f4f4f4;
+    font-family: 'Libre Baskerville', serif;
     padding: 1rem;
     text-align: center;
     font-size: 1.8rem;
@@ -42,14 +43,15 @@ header {
     background-color: #420c14; /* bordó oscuro */
     color: #d3d3d3;
     text-align: center;
-    border-radius: 8px;
+    font-family: 'Libre Baskerville', serif;
+    border-radius: 4px;
     text-decoration: none;
     font-weight: bold;
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .sidebar a.boton-ventana:hover {
-    background-color: #5a121e; /* bordó más claro */
+    background-color: #131313; /* bordó más claro */
     transform: translateY(-2px);
 }
 
@@ -62,15 +64,17 @@ header {
     border: 1px solid #555;
     color: #f0f0f0;
     border-radius: 10px;
+    
 }
 
 .main-content table.dataTable {
     width: 100% !important;
     flex-grow: 1;
     background-color: #2b2b2b; /* gris oscuro */
-    color: #ccc; /* letras gris claro */
+    color: #b9b9b9; /* letras gris claro */
     border-collapse: collapse;
     margin-top: 1rem;
+    
 }
 
 
@@ -78,6 +82,7 @@ header {
 
 .main-content h2 {
     color: #f0f0f0;
+    
 }
 
 /* BARRA SUPERIOR FLEX */
@@ -118,6 +123,7 @@ header {
     cursor: pointer;
     white-space: nowrap;
     transition: background-color 0.3s ease, transform 0.2s ease;
+    font-family: 'Libre Baskerville', serif;
 }
 
 
@@ -129,7 +135,7 @@ header {
 }
 
 .boton-ventana:hover {
-    background-color: #5a121e;
+    background-color: #131313;
     transform: translateY(-2px);
 }
 
