@@ -1,4 +1,4 @@
-from flask import Flask,render_template, session,flash, redirect, url_for
+from flask import Flask,render_template#, session,flash, redirect, url_for
 from dotenv import load_dotenv
 
 from routes.stock import stock_bp
