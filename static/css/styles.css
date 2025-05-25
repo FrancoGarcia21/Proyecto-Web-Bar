@@ -5,6 +5,7 @@
     font-family: 'Merriweather', serif;
 }
 
+
 body {
     margin: 0;
     background-color: #0d0d0d; /* negro de fondo */
@@ -234,6 +235,7 @@ select {
 
 input:focus,
 select:focus {
+background-color: #181818;
   outline: none;
   border-color: #999;
   box-shadow: 0 0 0 2px #444;
