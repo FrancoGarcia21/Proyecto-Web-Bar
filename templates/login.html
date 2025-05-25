@@ -7,11 +7,11 @@
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="static\css\styles.css" rel="stylesheet">
   </head>
-  <body class="bg-gray-100 flex items-center justify-center min-h-screen" style="margin: 0;
-    background-color: #030303; color: #d3d3d3;">
+  <body class="flex items-center justify-center min-h-screen">
 
-    <div class="w-full max-w-sm bg-white p-8 rounded shadow-md" style="background-color: #1a1a1a">
+    <divdiv class="w-full max-w-sm card-login" >
       <!-- Mensajes flash -->
       {% include 'mensajes/mensaje.html' %}
 
@@ -22,32 +22,20 @@
         method="POST" class="space-y-4">
         <div>
           <label for="dni_usuario"
-            class="block text-sm font-medium text-gray-600" style="font-family: 'Libre Baskerville', serif;">DNI</label>
+            class="block text-sm font-medium text-gray-600" >DNI</label>
           <input type="text" name="dni_usuario" id="id_dni" required
-            class="mt-1 w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" style="
-    background-color: #181818; /* negro suave */
-  color: #f0f0f0; /* texto claro */
-  border: 1px solid #555; /* borde gris oscuro */
-  font-family: 'Libre Baskerville', serif; /* si estás usando esa fuente */
-" />
+            class="mt-1 w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"  />
         </div>
 
         <div>
           <label for="password"
-            class="block text-sm font-medium text-gray-600" style="font-family: 'Libre Baskerville', serif;">Contraseña</label>
+            class="block text-sm font-medium text-gray-600" >Contraseña</label>
           <input type="password" name="password" id="id_password" required
-            class="mt-1 w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" style="
-    background-color: #181818; /* negro suave */
-  color: #f0f0f0; /* texto claro */
-  border: 1px solid #555; /* borde gris oscuro */
-  font-family: 'Libre Baskerville', serif; /* si estás usando esa fuente */
-" />
+            class="mt-1 w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"  />
         </div>
 
         <button type="submit"
-          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-md transition duration-200" style="padding: 10px 20px;
-    background-color: #420c14;
-    color: #d3d3d3">
+          class="btn-login" >
           Entrar
         </button>
       </form>
