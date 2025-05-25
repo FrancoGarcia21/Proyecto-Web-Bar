@@ -3,13 +3,20 @@
 
 <!-- Botones de la página -->
 {% block buttons %}
-<a href class="boton-ventana estiloBtn">AGREGAR</a>
-<a href class="boton-ventana estiloBtn">ELIMINAR</a>
-<a href class="boton-ventana estiloBtn">FINALIZAR</a>
+{% for categoria in categorias %}
+<!-- <a href="{{url_for('venta.buscar_categoria_route',id_categoria=categoria[0])}}" class="boton-ventana estiloBtn">{{categoria[1]}}</a> -->
+<button class="boton-ventana estiloBtn btn-categoria"
+  data-id="{{ categoria[0] }}">
+  {{ categoria[1] }}
+</button>
+{% endfor %}
 {%endblock%}
 
 <!-- Contenido de la página -->
 {% block content %}
 <!-- Se incluye el contenido de venta, es un listado de los productos con su precio (ver si lo dejamos como botones o listado) -->
 {% include 'VentaLista.html' %}
+<!-- scripts -->
+<script src="{{ url_for('static', filename='js/carrito.js') }}"></script>
+<script src="{{ url_for('static', filename='js/venta.js') }}"></script>
 {% endblock %}

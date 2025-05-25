@@ -19,3 +19,5 @@ def cargar_venta():
   # except Exception as e:
   #       print("Error al cargar usuario:", e)
   #       return False
+  
+  ################## 
