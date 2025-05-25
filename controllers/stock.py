@@ -59,6 +59,24 @@ def obtener_productos():
             print("Error al buscar productos:", e)
             return False
 
+############## Función OBTENER productos segun UNA categoria
+def obtener_productos_de_categoria(id_categoria):
+    """ Función para obtener productos para una categoria """
+    conexion = get_connection()
+    if conexion is None:
+        return []  # Devuelve lista vacía si falla la conexión
+
+    try:
+        cursor = conexion.cursor()
+        cursor.execute(""" SELECT * FROM public."productos" WHERE id_categoria = %s """, (id_categoria,))
+        productos = cursor.fetchall()
+        cursor.close()
+        conexion.close()
+        return productos
+    except Exception as e:
+            print("Error al buscar productos:", e)
+            return False
+
 ############## Función CARGAR producto nuevo
 def cargar_producto_nuevo(id_producto, nombre_producto, cantidad_stock, costo_unitario, limite_alarmante, id_categoria):
     """ Función para cargar productos nuevos """
