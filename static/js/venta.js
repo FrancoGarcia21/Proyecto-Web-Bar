@@ -24,6 +24,7 @@ function inicializarEventosProductos() {
       const nombre = boton.dataset.nombre;
       const precio = parseFloat(boton.dataset.precio);
 
+
       cantidad = 1;
 
       if (!isNaN(cantidad) && cantidad > 0) {
