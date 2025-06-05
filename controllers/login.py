@@ -25,6 +25,7 @@ def verificacion_usuario(id_usuario, password):
           return "false"
         
         clave_hasheada, rol = clave[0].encode('utf-8'), clave[1]
+        #aca tengo un problema
         
         
         if bcrypt.checkpw(password.encode('utf-8'), clave_hasheada):
