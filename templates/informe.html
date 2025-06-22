@@ -1,16 +1,58 @@
-{%extends 'base.html' %}
-{% block title %} INFORMES {%endblock%}
+{% extends 'base.html' %}
+{% block title %} INFORMES {% endblock %}
 
-<!-- Botones de la página -->
 {% block buttons %}
-<a href="{{url_for('home')}}" class="boton-ventana estiloBtn">INICIO</a>
-<a href class="boton-ventana estiloBtn">INFORME VENTA</a>
-<a href class="boton-ventana estiloBtn">INFORME USUARIO</a>
+<a href="{{ url_for('home') }}" class="boton-ventana estiloBtn">INICIO</a>
+<a href="{{ url_for('informe.informe_ventas') }}" class="boton-ventana estiloBtn">INFORME VENTA</a>
+<a href="{{ url_for('informe.informe_usuario') }}" class="boton-ventana estiloBtn">INFORME USUARIO</a>
+{% include 'botonInforme/informe-buscar.html' %}
+{% endblock %}
 
-{%include 'botonInforme/informe-buscar.html'%}
-{%endblock%}
-
-<!-- Contenido de la página -->
 {% block content %}
-<h1> pagina de informe territorio franco </h1>
+{% if tipo == 'ventas' %}
+    <h2>Tabla de Ventas</h2>
+    <table class="table-auto mt-4 text-sm border">
+        <thead>
+            <tr class="bg-gray-800 text-white">
+                <th class="px-2 py-1">Fecha</th>
+                <th class="px-2 py-1">Usuario</th>
+                <th class="px-2 py-1">Producto</th>
+                <th class="px-2 py-1">Cantidad</th>
+                <th class="px-2 py-1">Precio Unitario</th>
+                <th class="px-2 py-1">Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for v in ventas %}
+            <tr>
+                <td class="px-2 py-1">{{ v[0] }}</td>
+                <td class="px-2 py-1">{{ v[1] }}</td>
+                <td class="px-2 py-1">{{ v[2] }}</td>
+                <td class="px-2 py-1">{{ v[3] }}</td>
+                <td class="px-2 py-1">${{ '%.2f'|format(v[4]) }}</td>
+                <td class="px-2 py-1 font-semibold">${{ '%.2f'|format(v[5]) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Paginación -->
+    <div class="text-center mt-4">
+      {% if total_paginas > 1 %}
+        {% for p in range(1, total_paginas + 1) %}
+          <a href="{{ url_for('informe.informe_ventas', page=p) }}"
+             class="px-3 py-1 border rounded mx-1 {% if p == page %}bg-blue-600 text-white{% else %}bg-gray-200{% endif %}">
+            {{ p }}
+          </a>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+{% elif tipo == 'usuario' %}
+    <h2>Gráfico de ventas por usuario</h2>
+    <p>Aquí irá el gráfico de ventas de los vendedores.</p>
+
+{% else %}
+    <p>Seleccioná una opción de informe arriba.</p>
+{% endif %}
 {% endblock %}

@@ -16,6 +16,7 @@ app = Flask(__name__)
 # Esta palabra se utiliza para FLASH, maneja las sesiones
 app.secret_key = 'proyectoBar2025'
 
+
 # Registrar Blueprints
 app.register_blueprint(stock_bp)
 app.register_blueprint(venta_bp)
