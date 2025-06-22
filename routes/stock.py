@@ -75,8 +75,16 @@ def mensajes(resultado, mensaje_personalizado):
         flash("❌ Producto no encontrado. Verificá el código.", "error")
     elif resultado == "ok":
         flash(mensaje_personalizado, "success")
+    elif resultado == "Cantidad_Negativa":
+        flash("❌ La cantidad de stock no puede ser negativa.", "error")
     elif resultado == "Conexion_Error":
         flash("❌ Error de conexión con la base de datos.", "error")
+    elif resultado == ["Nombre_Producto_Existente"]:
+        flash("❌ El nombre del producto ya existe.", "error")
+    elif resultado == ["Producto_Existente"]:
+        flash("❌ El ID del producto ya existe.", "error")
+    elif resultado == ["Cantidad_Invalida"]:
+        flash("❌ La cantidad debe ser un número válido y positivo.", "error")
     else:
         flash("❌ Ocurrió un error inesperado.", "error")
     

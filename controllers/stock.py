@@ -79,6 +79,16 @@ def obtener_productos_de_categoria(id_categoria):
 ############## Función CARGAR producto nuevo
 def cargar_producto_nuevo(id_producto, nombre_producto, cantidad_stock, costo_unitario, limite_alarmante, id_categoria):
     """ Función para cargar productos nuevos """
+    
+    
+    # Validaciones
+    errores = validar_datos(id_producto, nombre_producto, cantidad_stock, costo_unitario, limite_alarmante)
+    
+    nombre_producto = nombre_producto.strip().title()  # Eliminar espacios al inicio y al final
+    
+    if errores is not None:
+        return errores
+    
     conexion = get_connection()
     if conexion is None:
         return "Conexion_Error"  
@@ -94,11 +104,16 @@ def cargar_producto_nuevo(id_producto, nombre_producto, cantidad_stock, costo_un
         conexion.close()
         return "ok"
     except Exception as e:
-            return 'error'
+        print(f"Error al insertar producto: {e}")
+        return 'error'
         
 ############## Función AGREGAR STOCK de un producto
 def agregar_stock(id_producto, cantidad_stock):
     """ Función para agregar stock de un producto """
+
+    # validar que cantidad stock no sea negativo
+    if int(cantidad_stock) < 0:
+        return "Cantidad_Negativa"
 
      # busco y sumo el producto nuevo
     un_producto = obtener_un_producto(id_producto)
@@ -239,3 +254,71 @@ def buscar_precio(id_producto):
         return None  # Si no se encuentra el producto, retorno None
 
     return un_producto[4]  # la 4ta columna es costo_unitario
+
+################ Función para validar los datos 
+def validar_datos(id_producto, nombre_producto, cantidad_stock, costo_unitario, limite_alarmante):
+    """ Función para validar los datos de un producto """
+    
+    error = validar_id_producto(id_producto)
+    if error is not None:
+        return error
+    
+    error = validar_nombre_producto(nombre_producto)
+    if error is not None:
+        return error
+    
+    for campo in [cantidad_stock, costo_unitario, limite_alarmante]:
+        error = validar_numero_positivo(campo)
+        if error:
+            return error
+    
+    # Si todas las validaciones pasan, retorno 
+    return error
+    
+############## VALIDACIONES DE DATOS SEPARADOS 
+
+############# Validar ID  
+def validar_id_producto(id_producto):
+    """ Valida si el id existe, si no existe retorne None """
+  
+    if obtener_un_producto(str(id_producto)) is not None:
+        return ["Producto_Existente"]
+    return None
+    
+############# Validar Nombre
+def validar_nombre_producto(nombre_producto):
+    """ Valida si el nombre ya existe en la base """
+    
+    nombre =  f'%{nombre_producto}%'
+    
+    conexion = get_connection()
+    if conexion is None:
+        return "Conexion_Error"
+    
+    try:
+        cursor = conexion.cursor()
+        cursor.execute(""" 
+                       SELECT EXISTS (SELECT 1 FROM public."productos" WHERE nombre_producto ILIKE  %s )
+                       """, (nombre,))
+        existe = cursor.fetchone()[0] # porque aca devuelve un boleana como [true, ] por el select Exist
+        cursor.close()
+        conexion.close()
+        
+        if existe:
+            return ["Nombre_Producto_Existente"]
+        return None
+    except Exception as e:
+            print("Error al validar nombre de producto:", e)
+            return False
+        
+############# Validar Cantidad
+def validar_numero_positivo(cantidad):
+    """ Valido que la cantidad sea positiva """
+    
+    try:
+        if int(cantidad) < 0:
+            return ["Cantidad_Negativa"]
+        return None
+    except (ValueError, TypeError):
+        return ["Cantidad_Invalida"]
+
