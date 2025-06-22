@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from controllers.stock import obtener_productos, cargar_producto_nuevo,modificar_stock, modificar_estado, obtener_categorias
+from controllers.stock import obtener_productos, cargar_producto_nuevo,modificar_stock, modificar_estado, obtener_categorias,agregar_stock
 from utils.decoradores import login_required, role_required
 import logging
 
@@ -46,7 +46,7 @@ def modificar_stock_route():
     id_producto = request.form.get('producto')
     cantidad_stock = request.form.get('cantidad')
     
-    resultado = modificar_stock(id_producto, cantidad_stock)
+    resultado = agregar_stock(id_producto, cantidad_stock)
     
     mensajes(resultado, "✅ STOCK MODIFICADO CORRECTAMENTE.")
     

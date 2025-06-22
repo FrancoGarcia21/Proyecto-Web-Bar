@@ -192,4 +192,5 @@ yarn.lock
 static/css/main.css
 static/css/main.css
 /static/css
+static/css/main.css
 node_modules
