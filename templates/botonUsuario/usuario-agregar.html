@@ -9,10 +9,10 @@
   <!-- Aca comienza el modal -->
   <div class="modal-box w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
     <h3 class="text-xl font-semibold mb-4">Crear Usuario</h3>
-    
+
     <!-- Formulario del modal -->
     <form action="{{ url_for('usuario.cargar_usuario_route') }}" method="POST">
-      
+
       <!-- Este botón cierra en la esquina -->
       <button type="button" onclick="my_modal_1.close()"
         class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
@@ -80,3 +80,9 @@
     </form>
   </div>
 </dialog>
+<script>
+  // Establece la fecha máxima como hoy
+  const inputFecha = document.getElementById('idBirthday');
+  const hoy = new Date().toISOString().split('T')[0]; // formato YYYY-MM-DD
+  inputFecha.max = hoy;
+</script>
