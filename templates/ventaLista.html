@@ -1,35 +1,19 @@
 <div id="productos">
   <!-- Aca se generan los botones de los productos -->
   {% for producto in productos %}
-<button
-  type="button"
-  class="boton-ventana estiloBtn btn-producto"
-  data-id="{{ producto[0] }}"
-  data-nombre="{{ producto[2] }}"
-  data-precio="{{ producto[4] }}">
-  {{ producto[2] }} - ${{ producto[4] }}
-</button>
+  <button
+    {% if producto[3] == 0 %}
+    disabled
+    class="boton-ventana estiloBtn btn-producto btn-disabled"
+    {% endif %}
+    type="button"
+    class="boton-ventana estiloBtn btn-producto"
+    data-id="{{ producto[1] }}"
+    data-nombre="{{ producto[2] }}"
+    data-precio="{{ producto[4] }}">
+    {{ producto[2] }} - ${{ producto[4] }}
+  </button>
   {% endfor %}
 
-  
-  <!-- Aca se genera el carrito -->
-  <aside id="carrito" class="w-1/4 p-4 border-l bg-gray-50">
-    <h2 class="text-xl font-semibold mb-2">Carrito</h2>
-    <table class="min-w-full text-sm" id="tabla-carrito">
-      <thead>
-        <tr>
-          <th>Producto</th>
-          <th>Cant.</th>
-          <th>Precio</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-    <div class="mt-4 font-bold">
-      Total: $<span id="total-carrito">0</span>
-    </div>
-    <button id="finalizar-venta" class="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 w-full">Finalizar Venta</button>
-  </aside>
-</div>
+  <button></button>
 </div>

@@ -1,7 +1,7 @@
 const carrito = [];
 
 function agregarAlCarrito(producto) {
-  const index = carrito.findIndex(p => p.id === producto.id);
+  const index = carrito.findIndex((p) => p.id === producto.id);
   if (index >= 0) {
     carrito[index].cantidad += producto.cantidad;
   } else {
@@ -11,7 +11,7 @@ function agregarAlCarrito(producto) {
 }
 
 function quitarDelCarrito(id) {
-  const index = carrito.findIndex(p => p.id === id);
+  const index = carrito.findIndex((p) => p.id === id);
   if (index >= 0) {
     carrito.splice(index, 1);
     renderCarrito();
@@ -19,7 +19,7 @@ function quitarDelCarrito(id) {
 }
 
 function actualizarCantidad(id, delta) {
-  const producto = carrito.find(p => p.id === id);
+  const producto = carrito.find((p) => p.id === id);
   if (producto) {
     producto.cantidad += delta;
     if (producto.cantidad <= 0) quitarDelCarrito(id);
@@ -28,26 +28,102 @@ function actualizarCantidad(id, delta) {
 }
 
 function renderCarrito() {
-  const tbody = document.querySelector('#tabla-carrito tbody');
-  tbody.innerHTML = '';
+  const $tbody = $("#tbodyCarrito");
+  $tbody.empty();
 
   let total = 0;
 
-  carrito.forEach(p => {
+  carrito.forEach((p) => {
     total += p.precio * p.cantidad;
 
-    const fila = document.createElement('tr');
-    fila.innerHTML = `
-      <td>${p.nombre}</td>
-      <td>${p.cantidad}</td>
-      <td>$${(p.precio * p.cantidad).toFixed(2)}</td>
-      <td>
-        <button onclick="actualizarCantidad(${p.id}, 1)">+</button>
-        <button onclick="actualizarCantidad(${p.id}, -1)">-</button>
-      </td>
-    `;
-    tbody.appendChild(fila);
+    const $fila = $(`
+      <tr>
+        <td>${p.nombre}</td>
+        <td>${p.cantidad}</td>
+        <td>$${(p.precio * p.cantidad).toFixed(2)}</td>
+        <td>
+          <button type="button" onclick="actualizarCantidad(${
+            p.id
+          }, 1)">+</button>
+          <button type="button" onclick="actualizarCantidad(${
+            p.id
+          }, -1)">-</button>
+        </td>
+      </tr>
+    `);
+
+    $tbody.append($fila);
   });
 
-  document.getElementById('total-carrito').textContent = total.toFixed(2);
+  $("#total-carrito").text(total.toFixed(2));
+}
+
+/*  Función escuchadora para mandar los datos a la base, formateo lo que esta en el carrito, solo mando id y cantidad */
+document.addEventListener("DOMContentLoaded", () => {
+  const finalizar = document.getElementById("finalizar-venta");
+
+  finalizar.addEventListener("click", () => {
+    if (carrito.length === 0) {
+      mensajes("Alerta", "No hay productos en el carrito", "warning");
+      return;
+    }
+
+    var venta = [];
+    for (const item of carrito) {
+      venta.push({
+        id: item.id,
+        cantidad: item.cantidad,
+      });
+    }
+    console.log(venta);
+
+    fetch("/venta/crear-venta", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(venta),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Error del servidor: " + response.status);
+        }
+        return response.json(); // solo si la respuesta fue válida
+      })
+      .then((data) => {
+        if (data.success) {
+          mensajes("Éxito", "Venta realizada con éxito", "success");
+          // cargo 
+
+
+          // Limpio el carrito
+          carrito.length = 0;
+          renderCarrito();
+        } else {
+          mensajes(
+            "Error",
+            data.message || "No se pudo realizar la venta",
+            "error"
+          );
+        }
+      })
+      .catch((error) => {
+        console.error("Error al enviar la venta:", error);
+        mensajes(
+          "Error",
+          "No se pudo procesar la venta. Intenta nuevamente.",
+          "error"
+        );
+      });
+  });
+});
+
+/* Mensajes con sweetalert genericos segun el response*/
+function mensajes(tittle, text, icon) {
+  Swal.fire({
+    title: tittle,
+    text: text,
+    icon: icon,
+    confirmButtonText: "Aceptar",
+  });
 }

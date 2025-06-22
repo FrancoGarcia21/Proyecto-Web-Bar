@@ -139,13 +139,13 @@ header {
         font-family: 'Libre Baskerville', serif;
         transition: background-color 0.3s ease, transform 0.2s ease;
         width: 100%;
-      }
+}
 
-      .btn-login:hover {
+.btn-login:hover {
         background-color: #131313;
         color: #d3d3d3;
         transform: translateY(-2px);
-      }
+}
 .card-login {
         background-color: #1a1a1a;
         border: 1px solid #555;
@@ -154,6 +154,7 @@ header {
         box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
       }
 
+/* Estilo de los botones en general */
 .boton-ventana input[type="text"] {
   background-color: #1a1a1a; /* negro suave */
   color: #f0f0f0; /* texto claro */
@@ -164,6 +165,16 @@ header {
 .boton-ventana:hover {
     background-color: #131313;
     transform: translateY(-2px);
+}
+
+/* Estilo de los botones cuando se deshabilitan */
+.btn-disabled{
+  background-color: grey;
+}
+
+.btn-disabled:hover{
+  background-color: grey;
+    transform: translateY(0px);
 }
 
 /* TABLA DE DATOS */

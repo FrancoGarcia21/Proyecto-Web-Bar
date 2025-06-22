@@ -1,3 +1,4 @@
+/* Escuchador principal */
 document.addEventListener("DOMContentLoaded", () => {
   inicializarEventosProductos();
   const botones = document.querySelectorAll(".btn-categoria");
@@ -17,6 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+
+/* funcion que crea los botones con un dataset del carrito*/
 function inicializarEventosProductos() {
   document.querySelectorAll(".btn-producto").forEach((boton) => {
     boton.addEventListener("click", () => {
@@ -24,9 +27,12 @@ function inicializarEventosProductos() {
       const nombre = boton.dataset.nombre;
       const precio = parseFloat(boton.dataset.precio);
 
-
       cantidad = 1;
 
+      /* aca agregar que si el producto ya no tiene stock no deje agregar mas al carrito y cambie de color el boton, hice un estilo para eso 
+        o dejar que lo haga el que cargue todos los items y cuando envie la peticion de carga decirle que no hay stock
+      */
+      
       if (!isNaN(cantidad) && cantidad > 0) {
         agregarAlCarrito({ id, nombre, precio, cantidad });
       }

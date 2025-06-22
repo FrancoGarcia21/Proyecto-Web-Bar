@@ -74,7 +74,6 @@ def obtener_productos_de_categoria(id_categoria):
         conexion.close()
         return productos
     except Exception as e:
-            print("Error al buscar productos:", e)
             return False
 
 ############## Función CARGAR producto nuevo
@@ -95,24 +94,30 @@ def cargar_producto_nuevo(id_producto, nombre_producto, cantidad_stock, costo_un
         conexion.close()
         return "ok"
     except Exception as e:
-            print("########## ERROR AL CARGAR EL PRODUCTO al cargar producto: ###############3", e)
             return 'error'
         
-############## Función MODIFICAR STOCK de un producto
+############## Función AGREGAR STOCK de un producto
+def agregar_stock(id_producto, cantidad_stock):
+    """ Función para agregar stock de un producto """
+
+     # busco y sumo el producto nuevo
+    un_producto = obtener_un_producto(id_producto)
+    if not un_producto:
+        return "Producto_No_Encontrado"
+        
+    cantidad_stock = int(cantidad_stock) + int(un_producto[3]) # el 3 es porque es la 3er columna de la tabla
+
+    return modificar_stock(id_producto, cantidad_stock)
+
+############### Función que MODIFICA el stock de un producto (conexion a base de datos)
 def modificar_stock(id_producto, cantidad_stock):
-    """ Función para modificar stock de un producto """
+    """ Funcion que llama a la base y carga el dato nuevo del stock """
     conexion = get_connection()
     if conexion is None:
         return "Conexion_Error"
     
     try:
-        # busco y sumo el producto nuevo
-        un_producto = obtener_un_producto(id_producto)
-        if not un_producto:
-            return "Producto_No_Encontrado"
         
-        cantidad_stock = int(cantidad_stock) + int(un_producto[3]) # el 3 es porque es la 3er columna de la tabla
-
         cursor = conexion.cursor()
         cursor.execute("""
             UPDATE public.productos
@@ -125,13 +130,13 @@ def modificar_stock(id_producto, cantidad_stock):
         return "ok"
     except Exception as e:
         return "error"
-    
+
 ############## Función MODIFICAR ESTADO de un producto
 def modificar_estado(id_producto, estado):
     """ Función para modificar el estado en la base """
     conexion = get_connection()
     
-    if conexion == None:
+    if conexion is None:
         return "conexion_error"
     
     try:
@@ -153,4 +158,84 @@ def modificar_estado(id_producto, estado):
         return "ok"
     except Exception as e:
         return "error"
+
+############## Función para VERIFICAR el stock de un producto
+def verificar_stock(pedido):
+    """ Función que verifica si un producto tiene stock antes de hacer la venta """
+    conexion = get_connection()
+    if conexion is None:
+        return "conexion_error"
+
+    errores = []
+
+    for item in pedido:
+        id_producto = str(item.get('id'))
+        cantidad_vendida = item.get('cantidad')
+
+        # Obtengo el producto
+        un_producto = obtener_un_producto(id_producto)
+        if not un_producto:
+            return {"estado": False, "error": "Producto No Encontrado con id: " + str(id_producto)}
+
+        cantidad_stock = un_producto[3] # la 3er columna es cantidad_stock
+        if cantidad_stock < cantidad_vendida:
+            errores.append(f"Stock insuficiente para el producto: {un_producto[2]}. Stock actual: {cantidad_stock}, cantidad vendida: {cantidad_vendida}")
+            
+    if errores:
+        # Si hay errores, los concateno en un string
+        error_mensaje = " | ".join(errores)
+        return {"estado": False, "error": error_mensaje}
         
+    return {"estado": True, "error": "Stock suficiente"}
+
+
+################ Función para CALCULAR el valor total de un pedido
+def calcular_valor_total(pedido):
+    """ Función que calcula el valor total de un pedido """
+    valor_total = 0
+    for item in pedido:
+        id_producto = str(item.get('id'))
+        cantidad_vendida = item.get('cantidad')
+
+        # Obtengo el producto
+        un_producto = obtener_un_producto(id_producto)
+        if not un_producto:
+            continue  # Si no se encuentra el producto, lo ignoro
+
+        costo_unitario = un_producto[4]  # la 4ta columna es costo_unitario
+        valor_total += costo_unitario * cantidad_vendida
+        
+    return valor_total
+    
+################ Función para DESCONTAR el stock
+def descontar_stock(producto):
+    """ Función que descuenta una cierta cantidad al stock """
+
+    id_producto = str(producto.get('id'))
+    cantidad_vendida = producto.get('cantidad')
+    
+    producto_en_base = obtener_un_producto(id_producto)
+    
+    cantidad_final = int(producto_en_base[3]) - int(cantidad_vendida)  # la 3er columna es cantidad_stock
+    
+    return modificar_stock(id_producto, cantidad_final)
+    
+   
+
+############### Función descontar stock de un peiddo
+def descontar_stock_pedido(pedido):
+    """ Funcion que descuenta el stock de todos los productos de un pedido """
+    for item in pedido:
+        resultado = descontar_stock(item)
+        if resultado != "ok":
+            return False
+    return True
+
+############### Funcion para buscar el precio de un producto
+def buscar_precio(id_producto):
+    """ Función que busca el precio de un producto """
+    un_producto = obtener_un_producto(str(id_producto))
+    if not un_producto:
+        return None  # Si no se encuentra el producto, retorno None
+
+    return un_producto[4]  # la 4ta columna es costo_unitario
