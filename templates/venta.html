@@ -16,8 +16,10 @@
 <!-- Se incluye el contenido de venta, es un listado de los productos con su precio (ver si lo dejamos como botones o listado) -->
 <!-- Se incluye la vista de las categorias y el carrito como un aside -->
 
-{% include 'VentaLista.html' %}
-{% include 'carrito.html' %}
+<div class="venta-wrapper">
+  {% include 'carrito.html' %}
+  {% include 'VentaLista.html' %}
+</div>
 
 <!-- scripts -->
 <script src="{{ url_for('static', filename='js/carrito.js') }}"></script>

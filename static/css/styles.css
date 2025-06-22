@@ -258,7 +258,7 @@ background-color: #181818;
 }
 
 .modal-box button[type="submit"] {
-  background-color:  #420c14; /* bordó */
+  background-color:  #fc8b9c; /* bordó */
   color: #ccc;
   border: 1px solid #ccc;
 }
@@ -277,5 +277,77 @@ background-color: #181818;
 .modal-box button[type="button"]:hover {
   background-color: #2a2a2a;
   color: #ccc;
+}
+
+
+/*Venta */
+
+
+.venta-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+
+
+#carrito {
+  width: 30%;
+  background-color: #1a1a1a;
+  color: #d3d3d3;
+  border: 1px solid #444;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+   height: auto;
+}
+
+#tabla-carrito {
+  width: 10%;
+  border-collapse: collapse;
+  overflow-y: auto;                 
+  display: block;
+}
+
+#tabla-carrito thead,
+#tabla-carrito tbody {
+  display: block;
+}
+
+#tabla-carrito thead {
+  background-color: #2e2e2e;
+  color: #f0f0f0;
+}
+
+#tabla-carrito tbody {
+  max-height: 165px;                 /* Ajustalo según tus necesidades */
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+#tabla-carrito th,
+#tabla-carrito td {
+  padding: 0.5rem;
+  text-align: left;
+  width: 100px;                      /* Para que no se deformen */
+  border-bottom: 1px solid #555;
+}
+
+#total-carrito {
+  font-family: 'Libre Baskerville', serif;
+}
+
+#finalizar-venta {
+  background-color: #420c14;
+  color: #d3d3d3;
+  font-family: 'Libre Baskerville', serif;
+  transition: background-color 0.3s ease;
+  border: 1px solid #ccc;
+}
+
+#finalizar-venta:hover {
+  background-color: #1a1a1a;
 }
 
