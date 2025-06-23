@@ -278,6 +278,71 @@ background-color: #181818;
   background-color: #2a2a2a;
   color: #ccc;
 }
+/* Carrito */
+#tabla-carrito {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* ✅ importante */
+}
+
+#tabla-carrito thead {
+  background-color: #2e2e2e;
+  color: #f0f0f0;
+}
+
+#tabla-carrito tbody {
+  display: block;
+  max-height: 300px; /* o el alto que quieras */
+  overflow-y: auto;
+  width: 100%;
+}
+
+#tabla-carrito thead tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+#tabla-carrito tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+#tabla-carrito th,
+#tabla-carrito td {
+  padding: 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid #555;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.boton-mas-menos {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem; /* separación entre botones */
+}
+
+.boton-mas-menos button {
+  flex: 1 1 0;
+  padding: 0.5rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #fff;
+}
+
+.boton-mas {
+  background-color: #28a745;
+}
+
+.boton-menos {
+  background-color: #dc3545;
+}
+
 
 
 /*Venta */

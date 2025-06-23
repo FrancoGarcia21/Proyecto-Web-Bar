@@ -38,16 +38,17 @@ function renderCarrito() {
 
     const $fila = $(`
       <tr>
-        <td>${p.nombre}</td>
-        <td>${p.cantidad}</td>
-        <td>$${(p.precio * p.cantidad).toFixed(2)}</td>
-        <td>
-          <button type="button" onclick="actualizarCantidad(${
-            p.id
-          }, 1)">+</button>
-          <button type="button" onclick="actualizarCantidad(${
-            p.id
-          }, -1)">-</button>
+        <td class="truncate max-w-[150px]">${p.nombre}</td>
+        <td class="text-center">${p.cantidad}</td>
+        <td class="text-right">$${(p.precio * p.cantidad).toFixed(2)}</td>
+        <td class="text-center">
+          <div class="boton-mas-menos">
+          <button 
+          class="boton-mas"
+          type="button" onclick="actualizarCantidad(${p.id}, 1)">+</button>
+          <button 
+          class="boton-menos"
+          type="button" onclick="actualizarCantidad(${p.id}, -1)">-</button>
         </td>
       </tr>
     `);
@@ -93,8 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((data) => {
         if (data.success) {
           mensajes("Éxito", "Venta realizada con éxito", "success");
-          // cargo 
-
+          // cargo
 
           // Limpio el carrito
           carrito.length = 0;
