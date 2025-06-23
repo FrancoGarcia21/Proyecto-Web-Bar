@@ -5,11 +5,28 @@
 <a href="{{ url_for('home') }}" class="boton-ventana estiloBtn">INICIO</a>
 <a href="{{ url_for('informe.informe_ventas') }}" class="boton-ventana estiloBtn">INFORME VENTA</a>
 <a href="{{ url_for('informe.informe_usuario') }}" class="boton-ventana estiloBtn">INFORME USUARIO</a>
+
+
 {% include 'botonInforme/informe-buscar.html' %}
 {% endblock %}
 
 {% block content %}
-{% if tipo == 'ventas' %}
+
+{% if tipo == 'ventas_ultimos_7' %}
+<h3 class="text-2xl font-semibold mb-4 text-gray-300">Ventas - Seleccionar un intervalo de tiempo</h3>
+
+<!-- Formulario de fechas -->
+<form id="formRango7" class="mb-4 flex gap-2 items-center text-white">
+  <label>Desde: <input type="date" id="desde7" class="text-black px-2 rounded"></label>
+  <label>Hasta: <input type="date" id="hasta7" class="text-black px-2 rounded"></label>
+  <button type="submit" class="px-4 py-1 bg-blue-600 rounded hover:bg-blue-700">Buscar</button>
+</form>
+
+<!-- Gráfico -->
+<canvas id="graficoVentas7Dias" class="bg-gray-800 rounded-lg p-4 shadow-md" width="700" height="300"></canvas>
+
+
+{% elif tipo == 'ventas' %}
 <h3 class="text-2xl font-semibold mb-4 text-gray-300">Tabla de Ventas</h3>
 
 <div class="overflow-x-auto">
@@ -52,11 +69,17 @@
 {% elif tipo == 'ventas_hoy' %}
 <h3 class="text-2xl font-semibold mb-4 text-gray-300">Ventas del Día de hoy</h3>
 
-<div class="my-6">
-  <h4 class="text-xl font-semibold text-gray-200 mb-2">Gráfico de Ventas por Hora (Hoy)</h4>
-  <canvas id="graficoVentasHora" class="bg-gray-800 rounded-lg p-4 shadow-md" width="700" height="300"></canvas>
-<!--Aca va el grafico de ventas del dia de hoy aca y solo aca necesito que se visualize el grafico quiero que sea simple por dios-->
-</div>
+{% elif tipo == 'ventas_rango' %}
+<h3 class="text-2xl font-semibold mb-4 text-gray-300">Ventas por Día (Rango)</h3>
+
+<form id="formRango" class="mb-4 flex gap-2 items-center text-white">
+  <label>Desde: <input type="date" id="fechaInicio" required class="text-black px-2 rounded"></label>
+  <label>Hasta: <input type="date" id="fechaFin" required class="text-black px-2 rounded"></label>
+  <button type="submit" class="px-4 py-1 bg-blue-600 rounded hover:bg-blue-700">Ver</button>
+</form>
+
+<canvas id="graficoVentasRango" class="bg-gray-800 rounded-lg p-4 shadow-md" width="700" height="300"></canvas>
+
 
 {% else %}
   <p class="text-gray-300 mt-4">Seleccioná una opción de informe arriba.</p>
@@ -92,59 +115,144 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-  const canvas = document.getElementById("graficoVentasHora");
-  if (!canvas) return;  // Solo si estamos en el modo 'ventas_hoy'
+  const form = document.getElementById("formRango");
+  const canvas = document.getElementById("graficoVentasRango");
+  let chart = null;
 
-  fetch("/api/ventas/hoy")
-    .then(res => res.json())
-    .then(datos => {
-      if (!datos.length) return;
+  if (!form || !canvas) return;
 
-      const horas = datos.map(d => d.hora);
-      const totales = datos.map(d => d.total);
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const inicio = document.getElementById("fechaInicio").value;
+    const fin = document.getElementById("fechaFin").value;
 
-      new Chart(canvas, {
-        type: 'line',
-        data: {
-          labels: horas,
-          datasets: [{
-            label: 'Ventas por hora ($)',
-            data: totales,
-            borderColor: 'rgba(59, 130, 246, 1)',
-            backgroundColor: 'rgba(59, 130, 246, 0.2)',
-            tension: 0.4,
-            fill: true,
-            pointBackgroundColor: 'rgba(59, 130, 246, 1)',
-            pointRadius: 5
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              labels: { color: '#ffffff' }
-            },
-            tooltip: {
-              callbacks: {
-                label: ctx => `$${ctx.parsed.y.toFixed(2)}`
-              }
-            }
+    if (!inicio || !fin) return;
+
+    fetch(`/api/ventas/rango?inicio=${inicio}&fin=${fin}`)
+      .then(res => res.json())
+      .then(datos => {
+        if (!datos.length) {
+          if (chart) chart.destroy();
+          return;
+        }
+
+        const dias = datos.map(d => d.dia);
+        const totales = datos.map(d => d.total);
+
+        if (chart) chart.destroy();
+
+        chart = new Chart(canvas, {
+          type: 'bar',
+          data: {
+            labels: dias,
+            datasets: [{
+              label: 'Ventas por día ($)',
+              data: totales,
+              backgroundColor: 'rgba(34, 197, 94, 0.6)',
+              borderColor: 'rgba(34, 197, 94, 1)',
+              borderWidth: 1
+            }]
           },
-          scales: {
-            x: {
-              ticks: { color: '#ffffff' }
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { labels: { color: '#ffffff' } },
+              tooltip: {
+                callbacks: {
+                  label: ctx => `$${ctx.parsed.y.toFixed(2)}`
+                }
+              }
             },
-            y: {
-              beginAtZero: true,
-              ticks: {
-                color: '#ffffff',
-                callback: value => `$${value}`
+            scales: {
+              x: { ticks: { color: '#ffffff' } },
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  color: '#ffffff',
+                  callback: value => `$${value}`
+                }
               }
             }
           }
-        }
+        });
       });
+  });
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const canvas = document.getElementById("graficoVentas7Dias");
+  const form = document.getElementById("formRango7");
+  const desde = document.getElementById("desde7");
+  const hasta = document.getElementById("hasta7");
+  let chart = null;
+
+  function renderizarGrafico(dias, totales) {
+    if (chart) chart.destroy();
+    chart = new Chart(canvas, {
+      type: 'line',
+      data: {
+        labels: dias,
+        datasets: [{
+          label: 'Ventas diarias ($)',
+          data: totales,
+          borderColor: '#3B82F6',
+          backgroundColor: 'rgba(59, 130, 246, 0.1)',
+          borderWidth: 2,
+          fill: true,
+          tension: 0.3,
+          pointRadius: 4,
+          pointBackgroundColor: '#3B82F6',
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { labels: { color: '#ffffff' } },
+          tooltip: {
+            callbacks: {
+              label: ctx => `$${ctx.parsed.y.toFixed(2)}`
+            }
+          }
+        },
+        scales: {
+          x: { ticks: { color: '#ffffff' } },
+          y: {
+            beginAtZero: true,
+            ticks: {
+              color: '#ffffff',
+              callback: value => `$${value}`
+            }
+          }
+        }
+      }
     });
+  }
+
+  function cargarDatos(url) {
+    fetch(url)
+      .then(res => res.json())
+      .then(datos => {
+        if (!datos.length) {
+          if (chart) chart.destroy();
+          return;
+        }
+        const dias = datos.map(d => d.dia);
+        const totales = datos.map(d => parseFloat(d.total));
+        renderizarGrafico(dias, totales);
+      });
+  }
+
+  // Por defecto: últimos 7 días
+  cargarDatos("/api/ventas/ultimos7");
+
+  // Si se elige un rango
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const i = desde.value;
+    const f = hasta.value;
+    if (!i || !f) return;
+    cargarDatos(`/api/ventas/rango?inicio=${i}&fin=${f}`);
+  });
 });
 </script>
 

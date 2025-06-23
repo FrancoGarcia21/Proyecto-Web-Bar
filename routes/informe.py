@@ -18,11 +18,13 @@ def get_db_connection():
     )
 
 # Página inicial de informes → muestra solo el gráfico del día
+from datetime import timedelta, datetime
+
 @informe_bp.route('/informe')
 @login_required
 @role_required('administrador')
 def informe():
-    return render_template('informe.html', tipo='ventas_hoy')
+    return render_template('informe.html', tipo='ventas_ultimos_7')
 
 # Informe de ventas paginado (tabla completa)
 @informe_bp.route('/informe/ventas')
@@ -77,16 +79,20 @@ def api_ventas_hoy():
     conn = get_db_connection()
     cur = conn.cursor(cursor_factory=RealDictCursor)
 
+    hoy = date.today()
+    desde = datetime.combine(hoy, datetime.min.time()) - timedelta(hours=6)  # Ayer a las 18:00
+    hasta = datetime.combine(hoy, datetime.min.time()) + timedelta(hours=4)  # Hoy a las 04:00
+
     cur.execute("""
         SELECT 
-            TO_CHAR(DATE_TRUNC('hour', v.fecha_venta), 'HH24:MI') AS hora,
+            TO_CHAR(DATE_TRUNC('hour', v.fecha_venta), 'HH24:00') AS hora,
             SUM(dv.cantidad * dv.precio_unitario) AS total
         FROM ventas v
         JOIN detalle_venta dv ON v.id_venta = dv.id_venta
-        WHERE DATE(v.fecha_venta) = CURRENT_DATE
+        WHERE v.fecha_venta BETWEEN %s AND %s
         GROUP BY hora
         ORDER BY hora;
-    """)
+    """, (desde, hasta))
 
     resultados = cur.fetchall()
 
@@ -94,6 +100,63 @@ def api_ventas_hoy():
     conn.close()
 
     return jsonify(resultados)
+
+
+@informe_bp.route('/api/ventas/rango')
+@login_required
+@role_required('administrador')
+def api_ventas_rango():
+    inicio = request.args.get('inicio')
+    fin = request.args.get('fin')
+    if not inicio or not fin:
+        return jsonify([])
+
+    conn = get_db_connection()
+    cur = conn.cursor(cursor_factory=RealDictCursor)
+
+    cur.execute("""
+        SELECT 
+            fecha_venta::TEXT AS dia,
+            SUM(valor_total) AS total
+        FROM ventas
+        WHERE fecha_venta BETWEEN %s AND %s
+        GROUP BY fecha_venta
+        ORDER BY fecha_venta;
+    """, (inicio, fin))
+
+    resultados = cur.fetchall()
+
+    cur.close()
+    conn.close()
+
+    return jsonify(resultados)
+
+@informe_bp.route('/api/ventas/ultimos7')
+@login_required
+@role_required('administrador')
+def api_ventas_ultimos7():
+    conn = get_db_connection()
+    cur = conn.cursor(cursor_factory=RealDictCursor)
+
+    hoy = date.today()
+    hace_7 = hoy - timedelta(days=6)  # incluye hoy
+    cur.execute("""
+        SELECT 
+            TO_CHAR(fecha_venta, 'YYYY-MM-DD') AS dia,
+            SUM(valor_total) AS total
+        FROM ventas
+        WHERE fecha_venta BETWEEN %s AND %s
+        GROUP BY dia
+        ORDER BY dia;
+    """, (hace_7, hoy))
+
+    resultados = cur.fetchall()
+
+    cur.close()
+    conn.close()
+
+    return jsonify(resultados)
+
 
 # Informe de usuarios (placeholder)
 @informe_bp.route('/informe/usuario')
