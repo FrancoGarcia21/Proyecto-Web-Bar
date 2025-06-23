@@ -10,49 +10,69 @@
 
 {% block content %}
 {% if tipo == 'ventas' %}
-    <h2>Tabla de Ventas</h2>
-    <table class="table-auto mt-4 text-sm border">
-        <thead>
-            <tr class="bg-gray-800 text-white">
-                <th class="px-2 py-1">Fecha</th>
-                <th class="px-2 py-1">Usuario</th>
-                <th class="px-2 py-1">Producto</th>
-                <th class="px-2 py-1">Cantidad</th>
-                <th class="px-2 py-1">Precio Unitario</th>
-                <th class="px-2 py-1">Subtotal</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for v in ventas %}
-            <tr>
-                <td class="px-2 py-1">{{ v[0] }}</td>
-                <td class="px-2 py-1">{{ v[1] }}</td>
-                <td class="px-2 py-1">{{ v[2] }}</td>
-                <td class="px-2 py-1">{{ v[3] }}</td>
-                <td class="px-2 py-1">${{ '%.2f'|format(v[4]) }}</td>
-                <td class="px-2 py-1 font-semibold">${{ '%.2f'|format(v[5]) }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<h3 class="text-2xl font-semibold mb-4 text-gray-300">Tabla de Ventas</h3>
 
-    <!-- Paginación -->
-    <div class="text-center mt-4">
-      {% if total_paginas > 1 %}
-        {% for p in range(1, total_paginas + 1) %}
-          <a href="{{ url_for('informe.informe_ventas', page=p) }}"
-             class="px-3 py-1 border rounded mx-1 {% if p == page %}bg-blue-600 text-white{% else %}bg-gray-200{% endif %}">
-            {{ p }}
-          </a>
-        {% endfor %}
+<div class="overflow-x-auto">
+  <table class="dataTable">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Usuario</th>
+        <th>Producto</th>
+        <th>Cantidad</th>
+        <th>Precio Unitario</th>
+        <th>Subtotal</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for v in ventas %}
+      <tr>
+        <td>{{ v[0] }}</td>
+        <td>{{ v[1] }}</td>
+        <td>{{ v[2] }}</td>
+        <td class="text-center">{{ v[3] }}</td>
+        <td class="text-right">${{ '%.2f'|format(v[4]) }}</td>
+        <td class="text-right font-semibold">${{ '%.2f'|format(v[5]) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- PAGINACIÓN OSCURA -->
+{% if total_paginas > 1 %}
+  <div class="flex justify-between items-center mt-4 text-white">
+    <p class="text-sm ml-4 font-semibold">Mostrando página {{ page }} de {{ total_paginas }}</p>
+    <div class="flex gap-1 mr-4">
+      {% if page > 1 %}
+        <a href="{{ url_for('informe.informe_ventas', page=page-1) }}"
+           class="px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700">Anterior</a>
+      {% else %}
+        <span class="px-3 py-1 rounded bg-gray-700 text-gray-400 cursor-not-allowed">Anterior</span>
+      {% endif %}
+
+      {% for p in range(1, total_paginas + 1) %}
+        <a href="{{ url_for('informe.informe_ventas', page=p) }}"
+           class="px-3 py-1 rounded border border-gray-600 {% if p == page %}bg-blue-600 text-white{% else %}bg-gray-800 text-gray-300 hover:bg-gray-700{% endif %}">
+          {{ p }}
+        </a>
+      {% endfor %}
+
+      {% if page < total_paginas %}
+        <a href="{{ url_for('informe.informe_ventas', page=page+1) }}"
+           class="px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700">Siguiente</a>
+      {% else %}
+        <span class="px-3 py-1 rounded bg-gray-700 text-gray-400 cursor-not-allowed">Siguiente</span>
       {% endif %}
     </div>
+  </div>
+{% endif %}
 
 {% elif tipo == 'usuario' %}
-    <h2>Gráfico de ventas por usuario</h2>
-    <p>Aquí irá el gráfico de ventas de los vendedores.</p>
+  <h2 class="text-2xl text-gray-100">Gráfico de ventas por usuario</h2>
+  <p class="text-gray-300">Aquí irá el gráfico de ventas de los vendedores.</p>
 
 {% else %}
-    <p>Seleccioná una opción de informe arriba.</p>
+  <p class="text-gray-300 mt-4">Seleccioná una opción de informe arriba.</p>
 {% endif %}
 {% endblock %}

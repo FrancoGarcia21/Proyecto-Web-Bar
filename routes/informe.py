@@ -3,9 +3,10 @@ from utils.decoradores import login_required, role_required
 import psycopg2
 import os
 
+# Crear Blueprint
 informe_bp = Blueprint('informe', __name__)
 
-# Función para conectar a la base de datos usando variables del entorno
+# Función de conexión a la base de datos
 def get_db_connection():
     return psycopg2.connect(
         host=os.getenv('DB_HOST'),
@@ -14,26 +15,28 @@ def get_db_connection():
         password=os.getenv('DB_PASSWORD')
     )
 
-# Vista principal del informe (sin mostrar sección)
+# Página inicial de informes (sin contenido aún)
 @informe_bp.route('/informe')
 @login_required
 @role_required('administrador')
 def informe():
     return render_template('informe.html', tipo=None)
 
-# Vista con tabla de ventas paginada
+# Informe de ventas paginado
 @informe_bp.route('/informe/ventas')
 @login_required
 @role_required('administrador')
 def informe_ventas():
-    page = int(request.args.get('page', 1))         # Página actual desde query string (por defecto 1)
-    per_page = 15                                   # Cantidad de registros por página
-    offset = (page - 1) * per_page                  # OFFSET para la query
+    # Obtener número de página desde la query (?page=)
+    page = int(request.args.get('page', 1))
+    per_page = 10  # Cantidad de resultados por página
+    offset = (page - 1) * per_page
 
+    # Conectar a la base de datos
     conn = get_db_connection()
     cur = conn.cursor()
 
-    # Consulta paginada
+    # Consulta principal paginada
     cur.execute("""
         SELECT 
             v.fecha_venta,
@@ -49,17 +52,17 @@ def informe_ventas():
         ORDER BY v.fecha_venta DESC
         LIMIT %s OFFSET %s;
     """, (per_page, offset))
-
+    
     ventas = cur.fetchall()
 
-    # Contar total de registros para calcular la cantidad de páginas
+    # Calcular total de registros para la paginación
     cur.execute("SELECT COUNT(*) FROM detalle_venta;")
     total_registros = cur.fetchone()[0]
+    total_paginas = (total_registros + per_page - 1) // per_page  # Redondeo hacia arriba
 
+    # Cerrar conexión
     cur.close()
     conn.close()
-
-    total_paginas = (total_registros + per_page - 1) // per_page
 
     return render_template(
         'informe.html',
@@ -69,7 +72,7 @@ def informe_ventas():
         total_paginas=total_paginas
     )
 
-# Vista con texto plano (placeholder para informe por usuario)
+# Informe de usuarios (placeholder)
 @informe_bp.route('/informe/usuario')
 @login_required
 @role_required('administrador')

@@ -1,0 +1,57 @@
+<h3 class="text-2xl font-semibold mb-4 text-gray-300">Tabla de Ventas</h3>
+
+<div class="overflow-x-auto">
+  <table class="min-w-full bg-gray-900 shadow-md rounded-lg overflow-hidden">
+    <thead class="bg-gray-800">
+      <tr>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase">Fecha</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase">Usuario</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase">Producto</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase">Cantidad</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase">Precio Unitario</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase">Subtotal</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-700">
+      {% for v in ventas %}
+      <tr>
+        <td class="px-6 py-4 text-sm text-gray-200">{{ v[0] }}</td>
+        <td class="px-6 py-4 text-sm text-gray-200">{{ v[1] }}</td>
+        <td class="px-6 py-4 text-sm text-gray-200">{{ v[2] }}</td>
+        <td class="px-6 py-4 text-sm text-gray-200 text-center">{{ v[3] }}</td>
+        <td class="px-6 py-4 text-sm text-gray-200 text-right">${{ '%.2f'|format(v[4]) }}</td>
+        <td class="px-6 py-4 text-sm text-gray-200 text-right font-semibold">${{ '%.2f'|format(v[5]) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Paginación -->
+{% if total_paginas > 1 %}
+<div class="flex justify-between items-center mt-4 text-white">
+  <p class="text-sm ml-4 font-semibold">Mostrando página {{ page }} de {{ total_paginas }}</p>
+  <div class="flex gap-1 mr-4">
+    {% if page > 1 %}
+      <a href="{{ url_for('informe.informe_ventas', page=page-1) }}"
+         class="px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700 transition">Anterior</a>
+    {% else %}
+      <span class="px-3 py-1 rounded bg-gray-700 text-gray-400 cursor-not-allowed">Anterior</span>
+    {% endif %}
+
+    {% for p in range(1, total_paginas + 1) %}
+      <a href="{{ url_for('informe.informe_ventas', page=p) }}"
+         class="px-3 py-1 rounded border border-gray-600 {% if p == page %}bg-blue-600 text-white{% else %}bg-gray-800 text-gray-300 hover:bg-gray-700{% endif %}">
+        {{ p }}
+      </a>
+    {% endfor %}
+
+    {% if page < total_paginas %}
+      <a href="{{ url_for('informe.informe_ventas', page=page+1) }}"
+         class="px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700 transition">Siguiente</a>
+    {% else %}
+      <span class="px-3 py-1 rounded bg-gray-700 text-gray-400 cursor-not-allowed">Siguiente</span>
+    {% endif %}
+  </div>
+</div>
+{% endif %}
