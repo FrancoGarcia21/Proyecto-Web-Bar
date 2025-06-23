@@ -158,6 +158,36 @@ def api_ventas_ultimos7():
     return jsonify(resultados)
 
 
+
+@informe_bp.route('/api/usuarios/top3')
+@login_required
+@role_required('administrador')
+def api_usuarios_top3():
+    inicio = request.args.get('inicio')
+    fin = request.args.get('fin')
+    if not inicio or not fin:
+        return jsonify([])
+
+    conn = get_db_connection()
+    cur = conn.cursor(cursor_factory=RealDictCursor)
+
+    cur.execute("""
+        SELECT u.nombre, SUM(v.valor_total) AS total
+        FROM ventas v
+        JOIN usuarios u ON v.dni_usuario = u.dni_usuario
+        WHERE v.fecha_venta BETWEEN %s AND %s
+        GROUP BY u.nombre
+        ORDER BY total DESC
+        LIMIT 3;
+    """, (inicio, fin))
+
+    resultados = cur.fetchall()
+    cur.close()
+    conn.close()
+    return jsonify(resultados)
+
+
+
 # Informe de usuarios (placeholder)
 @informe_bp.route('/informe/usuario')
 @login_required

@@ -16,11 +16,21 @@
 <h3 class="text-2xl font-semibold mb-4 text-gray-300">Ventas - Seleccionar un intervalo de tiempo</h3>
 
 <!-- Formulario de fechas -->
-<form id="formRango7" class="mb-4 flex gap-2 items-center text-white">
-  <label>Desde: <input type="date" id="desde7" class="text-black px-2 rounded"></label>
-  <label>Hasta: <input type="date" id="hasta7" class="text-black px-2 rounded"></label>
-  <button type="submit" class="px-4 py-1 bg-blue-600 rounded hover:bg-blue-700">Buscar</button>
+<form id="formRango7" class="mb-4 p-4 bg-[#0d0d0d] rounded flex gap-2 items-center">
+  <label for="desde7" class="text-white font-semibold">Desde:</label>
+  <input type="date" id="desde7" class="px-2 py-1 rounded text-sm" />
+
+  <label for="hasta7" class="text-white font-semibold">Hasta:</label>
+  <input type="date" id="hasta7" class="px-2 py-1 rounded text-sm" />
+
+  <button type="submit" class="px-3 py-1 text-sm font-bold text-white bg-[#420c14] border border-[#ccc] rounded hover:bg-[#2a2a2a]">
+    Buscar
+  </button>
 </form>
+
+
+
+
 
 <!-- Gráfico -->
 <canvas id="graficoVentas7Dias" class="bg-gray-800 rounded-lg p-4 shadow-md" width="700" height="300"></canvas>
@@ -60,10 +70,19 @@
 </div>
 
 {% elif tipo == 'usuario' %}
-  <h2 class="text-2xl text-gray-100">Gráfico de ventas por usuario</h2>
-  <p class="text-gray-300">Aquí irá el gráfico de ventas de los vendedores.</p>
+<h3 class="text-2xl font-semibold mb-4 text-gray-300">Top 3 Vendedores</h3>
 
+<form id="formTopUsuarios" class="mb-4 flex gap-2 items-center bg-[#1e1e1e] p-2 rounded">
+  <label class="text-white font-semibold">Desde: 
+    <input type="date" id="desdeTop" class="bg-gray-900 text-white border border-gray-700 rounded px-2 py-1">
+  </label>
+  <label class="text-white font-semibold">Hasta: 
+    <input type="date" id="hastaTop" class="bg-gray-900 text-white border border-gray-700 rounded px-2 py-1">
+  </label>
+  <button type="submit" class="px-2 py-1 text-sm bg-[#420c14] text-white rounded border border-gray-500 hover:bg-[#5c1a25]">Buscar</button>
+</form>
 
+<canvas id="graficoTopUsuarios" class="bg-gray-800 rounded-lg p-4 shadow-md" width="700" height="300"></canvas>
 
 
 {% elif tipo == 'ventas_hoy' %}
@@ -255,6 +274,90 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("formTopUsuarios");
+  const canvas = document.getElementById("graficoTopUsuarios");
+  let chart = null;
+
+  if (!form || !canvas) return;
+
+  const hoy = new Date();
+  const hace30 = new Date();
+  hace30.setDate(hoy.getDate() - 30);
+
+  function formatoFecha(fecha) {
+    return fecha.toISOString().slice(0, 10);
+  }
+
+  document.getElementById("desdeTop").value = formatoFecha(hace30);
+  document.getElementById("hastaTop").value = formatoFecha(hoy);
+
+  function cargarTop3(inicio, fin) {
+    fetch(`/api/usuarios/top3?inicio=${inicio}&fin=${fin}`)
+      .then(res => res.json())
+      .then(datos => {
+        if (!datos.length) {
+          if (chart) chart.destroy();
+          return;
+        }
+
+        const nombres = datos.map(u => u.nombre);
+        const totales = datos.map(u => parseFloat(u.total));
+
+        if (chart) chart.destroy();
+
+        chart = new Chart(canvas, {
+          type: 'bar',
+          data: {
+            labels: nombres,
+            datasets: [{
+              label: 'Ventas totales ($)',
+              data: totales,
+              backgroundColor: '#420c14',
+              borderColor: '#9e1b3f',
+              borderWidth: 2
+            }]
+          },
+          options: {
+            plugins: {
+              legend: { labels: { color: '#ffffff' } },
+              tooltip: {
+                callbacks: {
+                  label: ctx => `$${ctx.parsed.y.toFixed(2)}`
+                }
+              }
+            },
+            scales: {
+              x: { ticks: { color: '#ffffff' } },
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  color: '#ffffff',
+                  callback: value => `$${value}`
+                }
+              }
+            }
+          }
+        });
+      });
+  }
+
+  // Cargar por defecto con últimos 30 días
+  cargarTop3(formatoFecha(hace30), formatoFecha(hoy));
+
+  // Cargar con los valores del form si el usuario filtra
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const inicio = document.getElementById("desdeTop").value;
+    const fin = document.getElementById("hastaTop").value;
+    if (inicio && fin) cargarTop3(inicio, fin);
+  });
+});
+</script>
+
+
 
 
 {% endblock %}
