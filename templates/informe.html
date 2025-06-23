@@ -13,66 +13,140 @@
 <h3 class="text-2xl font-semibold mb-4 text-gray-300">Tabla de Ventas</h3>
 
 <div class="overflow-x-auto">
-  <table class="dataTable">
-    <thead>
+<div class="my-6">
+
+
+  <table id="tablaVentas" class="dataTable min-w-full bg-gray-900 shadow-md rounded-lg overflow-hidden">
+    <thead class="bg-gray-800">
       <tr>
-        <th>Fecha</th>
-        <th>Usuario</th>
-        <th>Producto</th>
-        <th>Cantidad</th>
-        <th>Precio Unitario</th>
-        <th>Subtotal</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase">Fecha</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase">Usuario</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase">Producto</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase">Cantidad</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase">Precio Unitario</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase">Subtotal</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody class="divide-y divide-gray-700">
       {% for v in ventas %}
       <tr>
-        <td>{{ v[0] }}</td>
-        <td>{{ v[1] }}</td>
-        <td>{{ v[2] }}</td>
-        <td class="text-center">{{ v[3] }}</td>
-        <td class="text-right">${{ '%.2f'|format(v[4]) }}</td>
-        <td class="text-right font-semibold">${{ '%.2f'|format(v[5]) }}</td>
+        <td class="px-6 py-4 text-sm text-gray-200">{{ v[0] }}</td>
+        <td class="px-6 py-4 text-sm text-gray-200">{{ v[1] }}</td>
+        <td class="px-6 py-4 text-sm text-gray-200">{{ v[2] }}</td>
+        <td class="px-6 py-4 text-sm text-gray-200 text-center">{{ v[3] }}</td>
+        <td class="px-6 py-4 text-sm text-gray-200 text-right">${{ '%.2f'|format(v[4]) }}</td>
+        <td class="px-6 py-4 text-sm text-gray-200 text-right font-semibold">${{ '%.2f'|format(v[5]) }}</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 </div>
 
-<!-- PAGINACIÓN OSCURA -->
-{% if total_paginas > 1 %}
-  <div class="flex justify-between items-center mt-4 text-white">
-    <p class="text-sm ml-4 font-semibold">Mostrando página {{ page }} de {{ total_paginas }}</p>
-    <div class="flex gap-1 mr-4">
-      {% if page > 1 %}
-        <a href="{{ url_for('informe.informe_ventas', page=page-1) }}"
-           class="px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700">Anterior</a>
-      {% else %}
-        <span class="px-3 py-1 rounded bg-gray-700 text-gray-400 cursor-not-allowed">Anterior</span>
-      {% endif %}
-
-      {% for p in range(1, total_paginas + 1) %}
-        <a href="{{ url_for('informe.informe_ventas', page=p) }}"
-           class="px-3 py-1 rounded border border-gray-600 {% if p == page %}bg-blue-600 text-white{% else %}bg-gray-800 text-gray-300 hover:bg-gray-700{% endif %}">
-          {{ p }}
-        </a>
-      {% endfor %}
-
-      {% if page < total_paginas %}
-        <a href="{{ url_for('informe.informe_ventas', page=page+1) }}"
-           class="px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700">Siguiente</a>
-      {% else %}
-        <span class="px-3 py-1 rounded bg-gray-700 text-gray-400 cursor-not-allowed">Siguiente</span>
-      {% endif %}
-    </div>
-  </div>
-{% endif %}
-
 {% elif tipo == 'usuario' %}
   <h2 class="text-2xl text-gray-100">Gráfico de ventas por usuario</h2>
   <p class="text-gray-300">Aquí irá el gráfico de ventas de los vendedores.</p>
 
+
+
+
+{% elif tipo == 'ventas_hoy' %}
+<h3 class="text-2xl font-semibold mb-4 text-gray-300">Ventas del Día de hoy</h3>
+
+<div class="my-6">
+  <h4 class="text-xl font-semibold text-gray-200 mb-2">Gráfico de Ventas por Hora (Hoy)</h4>
+  <canvas id="graficoVentasHora" class="bg-gray-800 rounded-lg p-4 shadow-md" width="700" height="300"></canvas>
+<!--Aca va el grafico de ventas del dia de hoy aca y solo aca necesito que se visualize el grafico quiero que sea simple por dios-->
+</div>
+
 {% else %}
   <p class="text-gray-300 mt-4">Seleccioná una opción de informe arriba.</p>
 {% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Solo inicializar si no está ya inicializado
+    if (!$.fn.DataTable.isDataTable('#tablaVentas')) {
+      $('#tablaVentas').DataTable({
+        language: {
+          lengthMenu: "Mostrar _MENU_ registros por página",
+          zeroRecords: "No se encontraron resultados",
+          info: "Mostrando página _PAGE_ de _PAGES_",
+          infoEmpty: "Sin registros disponibles",
+          infoFiltered: "(filtrado de _MAX_ registros totales)",
+          search: "Buscar:",
+          paginate: {
+            previous: "Anterior",
+            next: "Siguiente"
+          }
+        },
+        pageLength: 10
+      });
+    }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const canvas = document.getElementById("graficoVentasHora");
+  if (!canvas) return;  // Solo si estamos en el modo 'ventas_hoy'
+
+  fetch("/api/ventas/hoy")
+    .then(res => res.json())
+    .then(datos => {
+      if (!datos.length) return;
+
+      const horas = datos.map(d => d.hora);
+      const totales = datos.map(d => d.total);
+
+      new Chart(canvas, {
+        type: 'line',
+        data: {
+          labels: horas,
+          datasets: [{
+            label: 'Ventas por hora ($)',
+            data: totales,
+            borderColor: 'rgba(59, 130, 246, 1)',
+            backgroundColor: 'rgba(59, 130, 246, 0.2)',
+            tension: 0.4,
+            fill: true,
+            pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+            pointRadius: 5
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              labels: { color: '#ffffff' }
+            },
+            tooltip: {
+              callbacks: {
+                label: ctx => `$${ctx.parsed.y.toFixed(2)}`
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: '#ffffff' }
+            },
+            y: {
+              beginAtZero: true,
+              ticks: {
+                color: '#ffffff',
+                callback: value => `$${value}`
+              }
+            }
+          }
+        }
+      });
+    });
+});
+</script>
+
+
 {% endblock %}
