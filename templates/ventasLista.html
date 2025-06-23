@@ -1,0 +1,28 @@
+<h3 class="text-2xl font-semibold mb-4 text-gray-300">Tabla de Ventas</h3>
+
+<div class="overflow-x-auto">
+  <table id="tablaVentas" class="dataTable min-w-full bg-gray-900 shadow-md rounded-lg overflow-hidden">
+    <thead class="bg-gray-800">
+      <tr>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase">Fecha</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase">Usuario</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase">Producto</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase">Cantidad</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase">Precio Unitario</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase">Subtotal</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-700">
+      {% for v in ventas %}
+      <tr>
+        <td class="px-6 py-4 text-sm text-gray-200">{{ v[0] }}</td>
+        <td class="px-6 py-4 text-sm text-gray-200">{{ v[1] }}</td>
+        <td class="px-6 py-4 text-sm text-gray-200">{{ v[2] }}</td>
+        <td class="px-6 py-4 text-sm text-gray-200 text-center">{{ v[3] }}</td>
+        <td class="px-6 py-4 text-sm text-gray-200 text-right">${{ '%.2f'|format(v[4]) }}</td>
+        <td class="px-6 py-4 text-sm text-gray-200 text-right font-semibold">${{ '%.2f'|format(v[5]) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
